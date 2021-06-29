@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="course_title_fontSize">8pt</dimen>
+    <dimen name="course_location_fontSize">6pt</dimen>
+</resources>

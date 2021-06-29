@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/Course_item_background"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/img_courselistitem_background1" />
+
+        <TextView
+            android:id="@+id/foreground_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/shape_image_forground_shadow" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/course_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="40dp"
+                android:gravity="bottom"
+                android:maxWidth="200dp"
+                android:singleLine="true"
+                android:text="课程名称"
+                android:textColor="@color/white"
+                android:textSize="@dimen/course_title_fontSize" />
+
+            <TextView
+                android:id="@+id/course_location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="40dp"
+                android:layout_toEndOf="@+id/course_title"
+                android:gravity="bottom"
+                android:text="课程地点"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/course_location_fontSize" />
+
+            <TextView
+                android:id="@+id/course_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/course_title"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-35dp"
+                android:gravity="bottom"
+                android:text="课程时间"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/course_location_fontSize" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</LinearLayout>
