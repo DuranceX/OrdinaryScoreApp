@@ -1,9 +1,14 @@
 package com.example.ordinaryscoreapp.Course;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -30,7 +35,6 @@ public class CourseOverview extends AppCompatActivity {
         setContentView(R.layout.activity_course_overview);
         courseList = this.findViewById(R.id.courseList);
         courseDAL = new CourseDAL(this);
-
         showCourseList();
     }
 

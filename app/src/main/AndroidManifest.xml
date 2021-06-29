@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Course.CourseOverview" />
+        <activity android:name=".Score.CourseScoreOverview" />
+        <activity android:name=".Student.StudentOverview" />
     </application>
 
 </manifest>

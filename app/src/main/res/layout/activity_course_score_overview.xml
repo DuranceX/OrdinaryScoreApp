@@ -19,5 +19,4 @@
         app:layout_constraintTop_toTopOf="parent" >
 
     </ListView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
