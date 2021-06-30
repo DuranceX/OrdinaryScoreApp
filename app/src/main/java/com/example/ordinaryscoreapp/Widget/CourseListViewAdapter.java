@@ -3,8 +3,6 @@ package com.example.ordinaryscoreapp.Widget;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,10 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ordinaryscoreapp.Course.CourseModify;
-import com.example.ordinaryscoreapp.Course.CourseOverview;
 import com.example.ordinaryscoreapp.R;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +85,7 @@ public class CourseListViewAdapter extends BaseAdapter {
                 convertView = inflater.inflate(R.layout.course_list_item_button,null);
                 Button button = (Button) convertView.findViewById(R.id.button);
                 button.setOnClickListener(v -> {
-                    Intent intent = new Intent(context,CourseModify.class);
+                    Intent intent = new Intent(context, CourseModify.class);
                     ((Activity) context).startActivityForResult(intent,0);
                 });
             }
@@ -115,6 +108,7 @@ public class CourseListViewAdapter extends BaseAdapter {
             holder.item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, CourseModify.class);
                 intent.putExtra("id",(CharSequence)list.get(position).get("id"));
+                intent.putExtra("background",imgName);
                 ((Activity) context).startActivityForResult(intent,1);
             });
         }

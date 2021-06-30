@@ -8,11 +8,11 @@ import androidx.annotation.Nullable;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
-    final String CREATE_STUDENT_TABLE_SQL = "create table student( _id integer primary key autoincrement," +
-            "student_no varchar," +
+    final String CREATE_STUDENT_TABLE_SQL = "create table student(" +
+            "student_no varchar primary key," +
             "student_name varchar," +
             "student_class varchar)";
-    final String CREATE_COURSE_TABLE_SQL = "create table course(course_id String primary key," +
+    final String CREATE_COURSE_TABLE_SQL = "create table course(course_id varchar primary key," +
             "course_title varchar," +
             "course_location varchar," +
             "course_time varchar)";

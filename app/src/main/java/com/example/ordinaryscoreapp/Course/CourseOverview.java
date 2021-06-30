@@ -41,13 +41,14 @@ public class CourseOverview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_overview);
         courseList = this.findViewById(R.id.courseList);
+        courseList.setDivider(null);
         courseDAL = new CourseDAL(this);
 
         //设置返回按钮和标题基本样式
         bar = getSupportActionBar();
         bar.setHomeButtonEnabled(true);
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setTitle("当前课程");
+        bar.setTitle("我的课程");
     }
 
     @Override
@@ -77,9 +78,11 @@ public class CourseOverview extends AppCompatActivity {
         courseListItems.clear();
         Map courseItems[] = courseDAL.dbFindAll();
         if(courseItems.length == 0){
+            courseList.setBackground(getDrawable(R.drawable.img_courselist_emptybackground));
             Toast.makeText(this,"没有查询到数据",Toast.LENGTH_SHORT).show();
         }
         else{
+            courseList.setBackground(null);
             for(int i=0;i<courseItems.length;i++){
                 String id = (String) courseItems[i].get("course_id");
                 String title = (String) courseItems[i].get("course_title");

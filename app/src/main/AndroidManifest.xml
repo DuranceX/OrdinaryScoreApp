@@ -19,7 +19,6 @@
         <activity android:name=".Course.CourseOverview" />
         <activity android:name=".Score.CourseScoreOverview" />
         <activity android:name=".Student.StudentOverview" />
-        <activity android:name=".Course.CourseModify" />
         <activity android:name=".Score.CourseScoreDetail" />
     </application>
 

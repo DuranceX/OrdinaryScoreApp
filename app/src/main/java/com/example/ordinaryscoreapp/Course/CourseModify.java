@@ -5,13 +5,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
 import com.example.ordinaryscoreapp.R;
@@ -23,6 +22,7 @@ public class CourseModify extends AppCompatActivity {
     EditText courseTitle;
     EditText courseLocation;
     EditText courseTime;
+    ImageView toolbarBackground;
     Spinner[] timePicker;
     Button addButton;
     Button resetButton;
@@ -30,19 +30,22 @@ public class CourseModify extends AppCompatActivity {
     View.OnClickListener listener;
     CourseDAL courseDAL;
 
-    ActionBar bar;
+    Toolbar bar;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_modify);
 
         //设置返回按钮和标题基本样式
-        bar = getSupportActionBar();
-        bar.setHomeButtonEnabled(true);
-        bar.setDisplayHomeAsUpEnabled(true);
+        bar = this.findViewById(R.id.toolbar);
+        toolbarBackground = this.findViewById(R.id.toolbarBackgroundImgView);
+        setSupportActionBar(bar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bar.setTitle("当前课程");
 
         //绑定组件,初始化变量
         courseId = this.findViewById(R.id.courseIdEditText);
+        courseId.setBackgroundColor(0xEEEEEEEE);
         courseTitle = this.findViewById(R.id.courseTitleEditText);
         courseLocation = this.findViewById(R.id.courseLocationEditText);
         courseTime = this.findViewById(R.id.courseTimeEditText);
@@ -94,6 +97,7 @@ public class CourseModify extends AppCompatActivity {
         //非空表示是修改课程信息
         if(!(getIntent().getSerializableExtra("id")==null)){
             String id = (String)getIntent().getSerializableExtra("id");
+            String imageName = (String)getIntent().getSerializableExtra("background");
             String where = "course_id = '" + id + "'";
             Map[] item = courseDAL.dbFind(where);
             if(item != null){
@@ -103,6 +107,9 @@ public class CourseModify extends AppCompatActivity {
                 courseLocation.setText(item[0].get("course_location").toString());
                 courseTime.setText(item[0].get("course_time").toString());
                 addButton.setText("修改信息");
+                int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
+                toolbarBackground.setImageResource(imageID);
+                bar.setSubtitle(courseTitle.getText().toString());
             }
         }
         //为空表示是添加课程信息,不做改动
