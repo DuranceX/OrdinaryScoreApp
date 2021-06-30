@@ -1,6 +1,8 @@
 package com.example.ordinaryscoreapp.Widget;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.view.LayoutInflater;
@@ -8,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ordinaryscoreapp.Course.CourseModify;
 import com.example.ordinaryscoreapp.Course.CourseOverview;
 import com.example.ordinaryscoreapp.R;
 
@@ -22,6 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Xie Jiadi
+ * @time 2021/6/29 22:50
+ * @description 自定义列表的Adapter类
+ */
 public class CourseListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Map<String,Object>> list;
@@ -33,14 +43,18 @@ public class CourseListViewAdapter extends BaseAdapter {
         public TextView courseTitle;
         public TextView courseLocation;
         public TextView courseTime;
+        public FrameLayout item;
      }
 
     public CourseListViewAdapter(Context context, List<Map<String, Object>> list) {
         inflater = LayoutInflater.from(context);
         this.list = list;
+
+        //数组末尾添加一个数据用来充当按钮的占位符
         HashMap button = new HashMap<String,Object>();
         button.put("button","button");
         list.add(button);
+
         this.context = context;
     }
 
@@ -71,13 +85,15 @@ public class CourseListViewAdapter extends BaseAdapter {
                 holder.courseTitle = (TextView) convertView.findViewById(R.id.course_title);
                 holder.courseLocation = (TextView) convertView.findViewById(R.id.course_location);
                 holder.courseTime = (TextView) convertView.findViewById(R.id.course_time);
+                holder.item = (FrameLayout) convertView.findViewById(R.id.FrameLayout_item);
                 convertView.setTag(holder);
             }
             else{
                 convertView = inflater.inflate(R.layout.course_list_item_button,null);
                 Button button = (Button) convertView.findViewById(R.id.button);
                 button.setOnClickListener(v -> {
-                    Toast.makeText(context,"点击按钮",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context,CourseModify.class);
+                    ((Activity) context).startActivityForResult(intent,0);
                 });
             }
         }
@@ -93,10 +109,25 @@ public class CourseListViewAdapter extends BaseAdapter {
             holder.courseTitle.setText((CharSequence)list.get(position).get("title"));
             holder.courseLocation.setText((CharSequence)list.get(position).get("location"));
             holder.courseTime.setText((CharSequence)list.get(position).get("time"));
+
+            //设置点击事件
+            ViewHolder temp = holder;
+            holder.item.setOnClickListener(v -> {
+                Intent intent = new Intent(context, CourseModify.class);
+                intent.putExtra("id",(CharSequence)list.get(position).get("id"));
+                ((Activity) context).startActivityForResult(intent,1);
+            });
         }
         return convertView;
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/6/29 22:51
+     * @description 判断是否是最后一个位置，是的话将样式改为按钮样式
+     * @param position 位置索引
+     */
     @Override
     public int getItemViewType(int position) {
         if(position == list.size()-1)

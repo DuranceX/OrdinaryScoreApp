@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
 import com.example.ordinaryscoreapp.R;
-import com.example.ordinaryscoreapp.Widget.CourseListViewAdapter;
+import com.example.ordinaryscoreapp.Widget.CourseScoreListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class CourseScoreOverview extends AppCompatActivity {
 
     private List<Map<String,Object>> courseListItems = new ArrayList<Map<String, Object>>();
     private ListView courseList;
-    private CourseListViewAdapter adapter;
+    private CourseScoreListViewAdapter adapter;
     private CourseDAL courseDAL;
 
     @Override
@@ -55,7 +55,7 @@ public class CourseScoreOverview extends AppCompatActivity {
                 courseListItems.add(item);
             }
         }
-        adapter = new CourseListViewAdapter(this,courseListItems);
+        adapter = new CourseScoreListViewAdapter(this,courseListItems);
         courseList.setAdapter(adapter);
     }
 }

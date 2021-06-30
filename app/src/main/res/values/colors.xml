@@ -5,9 +5,10 @@
     <color name="green">#FF62AA32</color>
     <color name="teal_200">#FF8C8C8C</color>
     <color name="teal_700">#FF333333</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#FF1A1A1A</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green_light">#FF80CD33</color>
     <color name="alpha">#55000000</color>
     <color name="transparent">#0000</color>
+    <color name="red">#FF2727</color>
 </resources>

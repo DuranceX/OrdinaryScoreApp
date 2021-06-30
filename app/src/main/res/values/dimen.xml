@@ -2,4 +2,5 @@
 <resources>
     <dimen name="course_title_fontSize">8pt</dimen>
     <dimen name="course_location_fontSize">6pt</dimen>
+    <dimen name="course_modify_fontSize">11pt</dimen>
 </resources>

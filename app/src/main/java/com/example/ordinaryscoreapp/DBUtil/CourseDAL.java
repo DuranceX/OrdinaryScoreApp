@@ -35,8 +35,9 @@ public class CourseDAL {
      * @param location 课程地点
      * @param time 课程时间
      * @param id 课程编号
+     * @return long
      */
-    public void dbAdd(String id, String title, String location,String time){
+    public long dbAdd(String id, String title, String location,String time){
         ContentValues values = new ContentValues();
         values.put("course_id",id);
         values.put("course_title",title);
@@ -48,6 +49,7 @@ public class CourseDAL {
         }
         else
             Log.i("Database","addSucceed");
+        return result;
     }
 
     /**
@@ -56,8 +58,9 @@ public class CourseDAL {
      * @description 数据删除方法
      * @param title 课程名
      * @param id 课程编号
+     * @return int
      */
-    public void dbDel(@Nullable String id, @Nullable String title){
+    public int dbDel(@Nullable String id, @Nullable String title){
         String where;
         if(!id.equals(""))
             where = "course_id='" + id + "'";
@@ -70,6 +73,7 @@ public class CourseDAL {
         }
         else
             Log.i("DataBase","delFailed");
+        return result;
     }
 
     /**
@@ -80,20 +84,21 @@ public class CourseDAL {
      * @param title 课程名
      * @param location 课程地点
      * @param time 课程时间
+     * @return long
      */
-    public void dbUpdate(String id,String title,String location,String time){
+    public long dbUpdate(String id,String title,String location,String time){
         ContentValues values = new ContentValues();
-        values.put("course_id",id);
         values.put("course_title",title);
         values.put("course_location",location);
         values.put("course_time",time);
-        String where = "course_id=" + id;
+        String where = "course_id='" + id + "'";
         long result = db.update(TABLE_NAME,values,where,null);
         if(result > 0){
             Log.i("DataBase","updateSucceed");
         }
         else
             Log.i("DataBase","updateFailed");
+        return result;
     }
 
     /**
