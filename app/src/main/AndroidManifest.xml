@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Course.CourseOverview" />
+        <activity android:name=".Course.CourseModify"
+            android:theme="@style/Theme.NoActionBar"/>
         <activity android:name=".Score.CourseScoreOverview" />
         <activity android:name=".Student.StudentOverview" />
         <activity android:name=".Score.CourseScoreDetail" />

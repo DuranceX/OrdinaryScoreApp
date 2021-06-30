@@ -3,9 +3,11 @@ package com.example.ordinaryscoreapp.Course;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ public class CourseModify extends AppCompatActivity {
     EditText courseLocation;
     EditText courseTime;
     ImageView toolbarBackground;
+    ListView studentList;
     Spinner[] timePicker;
     Button addButton;
     Button resetButton;
@@ -45,10 +48,10 @@ public class CourseModify extends AppCompatActivity {
 
         //绑定组件,初始化变量
         courseId = this.findViewById(R.id.courseIdEditText);
-        courseId.setBackgroundColor(0xEEEEEEEE);
         courseTitle = this.findViewById(R.id.courseTitleEditText);
         courseLocation = this.findViewById(R.id.courseLocationEditText);
         courseTime = this.findViewById(R.id.courseTimeEditText);
+        studentList = this.findViewById(R.id.courseStudentList);
         addButton = this.findViewById(R.id.courseAddButton);
         delButton = this.findViewById(R.id.courseDelButton);
         resetButton = this.findViewById(R.id.courseResetButton);
@@ -101,7 +104,7 @@ public class CourseModify extends AppCompatActivity {
             String where = "course_id = '" + id + "'";
             Map[] item = courseDAL.dbFind(where);
             if(item != null){
-                courseId.setText(item[0].get("course_id").toString());
+                courseId.setText(" " + item[0].get("course_id").toString());
                 courseId.setFocusable(false);
                 courseTitle.setText(item[0].get("course_title").toString());
                 courseLocation.setText(item[0].get("course_location").toString());
@@ -110,6 +113,12 @@ public class CourseModify extends AppCompatActivity {
                 int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
                 toolbarBackground.setImageResource(imageID);
                 bar.setSubtitle(courseTitle.getText().toString());
+                String[] strs = new String[]{
+                        "TestData","TestData2","TestData3",
+                        "3180608067  软件1802  谢嘉迪"
+                };
+                ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,strs);
+                studentList.setAdapter(adapter);
             }
         }
         //为空表示是添加课程信息,不做改动

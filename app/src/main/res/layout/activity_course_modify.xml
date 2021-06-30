@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -27,151 +28,222 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/courseIdLabel"
-        android:layout_width="wrap_content"
+    <com.lihang.ShadowLayout
+        android:id="@+id/shadowBackground"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbarBackgroundImgView"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:text="课程编号："
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_fontSize" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        app:hl_cornerRadius="0dp"
+        app:hl_shadowColor="#8800873C"
+        app:hl_shadowHiddenLeft="true"
+        app:hl_shadowHiddenRight="true"
+        app:hl_shadowHiddenTop="true"
+        app:hl_shadowLimit="10dp"
+        tools:layout_marginLeft="-5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="-5dp">
+
+            <TextView
+                android:id="@+id/courseIdLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:text="课程编号："
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_fontSize" />
+
+            <TextView
+                android:id="@+id/courseTitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseIdLabel"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="课程名称："
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_fontSize" />
+
+            <TextView
+                android:id="@+id/courseLocationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/courseTitleLabel"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="课程地点："
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_fontSize" />
+
+            <TextView
+                android:id="@+id/courseTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/courseLocationLabel"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:text="课程时间："
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_fontSize" />
+
+            <EditText
+                android:id="@+id/courseIdEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/courseIdLabel"
+                android:background="@android:drawable/editbox_background_normal"
+                android:backgroundTint="#3700D35E"
+                android:ems="12"
+                android:hint="  请输入课程编号"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_inputFontSize" />
+
+            <EditText
+                android:id="@+id/courseTitleEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/courseIdEditText"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="18dp"
+                android:layout_toEndOf="@+id/courseTitleLabel"
+                android:background="@android:drawable/editbox_background"
+                android:backgroundTint="#3700D35E"
+                android:ems="12"
+                android:hint="  请输入课程名称"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_inputFontSize" />
+
+            <EditText
+                android:id="@+id/courseLocationEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/courseTitleEditText"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="18dp"
+                android:layout_toEndOf="@+id/courseLocationLabel"
+                android:background="@android:drawable/editbox_background"
+                android:backgroundTint="#3700D35E"
+                android:ems="12"
+                android:hint="  请输入课程地点"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_inputFontSize" />
+
+            <EditText
+                android:id="@+id/courseTimeEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/courseLocationEditText"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="18dp"
+                android:layout_toEndOf="@+id/courseTimeLabel"
+                android:background="@android:drawable/editbox_background"
+                android:backgroundTint="#3700D35E"
+                android:ems="12"
+                android:hint="  请输入课程时间"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="@dimen/course_modify_inputFontSize" />
+
+            <Button
+                android:id="@+id/courseAddButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseTimeLabel"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-black"
+                android:text="添加课程"
+                app:strokeColor="@color/green_deep" />
+
+            <Button
+                android:id="@+id/courseResetButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseTimeLabel"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@+id/courseAddButton"
+                android:fontFamily="sans-serif-black"
+                android:text="重设数据"
+                app:strokeColor="@color/green_deep" />
+
+            <Button
+                android:id="@+id/courseDelButton"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseTimeLabel"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@+id/courseResetButton"
+                android:fontFamily="sans-serif-black"
+                android:text="删除课程"
+                android:textColor="@color/red"
+                app:strokeColor="@color/red" />
+        </RelativeLayout>
+    </com.lihang.ShadowLayout>
 
     <TextView
-        android:id="@+id/courseTitleLabel"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/courseIdLabel"
+        android:layout_below="@+id/shadowBackground"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:text="课程名称："
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_fontSize" />
+        android:layout_marginTop="10dp"
+        android:text="选课学生列表："
+        android:textSize="@dimen/course_title_fontSize"
+        android:textColor="@color/green_dark" />
 
     <TextView
-        android:id="@+id/courseLocationLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseTitleLabel"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:text="课程地点："
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_fontSize" />
-
-    <TextView
-        android:id="@+id/courseTimeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseLocationLabel"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:text="课程时间："
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_fontSize" />
-
-    <EditText
-        android:id="@+id/courseTitleEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@+id/courseIdEditText"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="23dp"
-        android:layout_toEndOf="@+id/courseTitleLabel"
-        android:background="@android:drawable/editbox_background"
-        android:backgroundTint="#3700D35E"
-        android:ems="12"
-        android:hint="  请输入课程名称"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_inputFontSize" />
-
-    <EditText
-        android:id="@+id/courseIdEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@+id/toolbarBackgroundImgView"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="27dp"
-        android:layout_toEndOf="@+id/courseIdLabel"
-        android:background="@android:drawable/editbox_background"
-        android:backgroundTint="#3700D35E"
-        android:ems="12"
-        android:hint="  请输入课程编号"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_inputFontSize" />
-
-    <EditText
-        android:id="@+id/courseLocationEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@+id/courseTitleEditText"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="23dp"
-        android:layout_toEndOf="@+id/courseTitleLabel"
-        android:background="@android:drawable/editbox_background"
-        android:backgroundTint="#3700D35E"
-        android:ems="12"
-        android:hint="  请输入课程地点"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_inputFontSize" />
-
-    <EditText
-        android:id="@+id/courseTimeEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@+id/courseLocationEditText"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="23dp"
-        android:layout_toEndOf="@+id/courseTimeLabel"
-        android:background="@android:drawable/editbox_background"
-        android:backgroundTint="#3700D35E"
-        android:ems="12"
-        android:hint="  请输入课程时间"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="@dimen/course_modify_inputFontSize" />
-
-    <Button
-        android:id="@+id/courseAddButton"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseTimeLabel"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-black"
-        android:text="添加课程"
-        app:strokeColor="@color/green_deep" />
-
-    <Button
-        android:id="@+id/courseDelButton"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseTimeLabel"
+        android:id="@+id/addStudent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/shadowBackground"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_toEndOf="@+id/courseResetButton"
-        android:fontFamily="sans-serif-black"
-        android:text="删除课程"
-        android:textColor="@color/red"
-        app:strokeColor="@color/red" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/textView"
+        android:background="@drawable/icon_plus" />
 
-    <Button
-        android:id="@+id/courseResetButton"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseTimeLabel"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_toEndOf="@+id/courseAddButton"
-        android:fontFamily="sans-serif-black"
-        android:text="重设数据"
-        app:strokeColor="@color/green_deep" />
+    <TextView
+        android:id="@+id/delStudent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/shadowBackground"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/addStudent"
+        android:background="@drawable/icon_minus" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp"
+        android:background="#E2E2E2" />
+
+    <ListView
+        android:id="@+id/courseStudentList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp" />
 
 </RelativeLayout>
