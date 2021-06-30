@@ -5,15 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/toolbarBackgroundImgView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@color/green_deep" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:collapseIcon="@drawable/abc_vector_test"
+        app:navigationIcon="@drawable/abc_vector_test"
+        app:subtitle="移动应用开发"
+        app:subtitleTextColor="#DDDDDD"
+        app:title="当前课程"
+        app:titleTextColor="@color/white">
+
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/courseIdLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarBackgroundImgView"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        android:textSize="@dimen/course_modify_fontSize"
+        android:text="课程编号："
         android:textColor="@color/black"
-        android:text="课程编号：" />
+        android:textSize="@dimen/course_modify_fontSize" />
 
     <TextView
         android:id="@+id/courseTitleLabel"
@@ -51,40 +74,66 @@
     <EditText
         android:id="@+id/courseTitleEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@+id/courseIdEditText"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="23dp"
         android:layout_toEndOf="@+id/courseTitleLabel"
-        android:ems="8"
-        android:hint="请输入课程名称"
+        android:background="@android:drawable/editbox_background"
+        android:backgroundTint="#3700D35E"
+        android:ems="12"
+        android:hint="  请输入课程名称"
         android:inputType="textPersonName"
-        android:textSize="@dimen/course_modify_fontSize" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_modify_inputFontSize" />
 
     <EditText
         android:id="@+id/courseIdEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/toolbarBackgroundImgView"
         android:layout_marginStart="0dp"
+        android:layout_marginTop="27dp"
         android:layout_toEndOf="@+id/courseIdLabel"
-        android:ems="8"
-        android:hint="请输入课程编号"
+        android:background="@android:drawable/editbox_background"
+        android:backgroundTint="#3700D35E"
+        android:ems="12"
+        android:hint="  请输入课程编号"
         android:inputType="textPersonName"
-        android:textSize="@dimen/course_modify_fontSize" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_modify_inputFontSize" />
 
     <EditText
         android:id="@+id/courseLocationEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@+id/courseTitleEditText"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="23dp"
         android:layout_toEndOf="@+id/courseTitleLabel"
-        android:ems="8"
-        android:hint="请输入课程地点"
+        android:background="@android:drawable/editbox_background"
+        android:backgroundTint="#3700D35E"
+        android:ems="12"
+        android:hint="  请输入课程地点"
         android:inputType="textPersonName"
-        android:textSize="@dimen/course_modify_fontSize" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_modify_inputFontSize" />
+
+    <EditText
+        android:id="@+id/courseTimeEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_below="@+id/courseLocationEditText"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:layout_toEndOf="@+id/courseTimeLabel"
+        android:background="@android:drawable/editbox_background"
+        android:backgroundTint="#3700D35E"
+        android:ems="12"
+        android:hint="  请输入课程时间"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_modify_inputFontSize" />
 
     <Button
         android:id="@+id/courseAddButton"
@@ -94,6 +143,7 @@
         android:layout_below="@+id/courseTimeLabel"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-black"
         android:text="添加课程"
         app:strokeColor="@color/green_deep" />
 
@@ -106,6 +156,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_toEndOf="@+id/courseResetButton"
+        android:fontFamily="sans-serif-black"
         android:text="删除课程"
         android:textColor="@color/red"
         app:strokeColor="@color/red" />
@@ -119,20 +170,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_toEndOf="@+id/courseAddButton"
+        android:fontFamily="sans-serif-black"
         android:text="重设数据"
         app:strokeColor="@color/green_deep" />
-
-    <EditText
-        android:id="@+id/courseTimeEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/courseLocationEditText"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/courseTimeLabel"
-        android:ems="8"
-        android:hint="请输入课程时间"
-        android:inputType="textPersonName"
-        android:textSize="@dimen/course_modify_fontSize" />
 
 </RelativeLayout>
