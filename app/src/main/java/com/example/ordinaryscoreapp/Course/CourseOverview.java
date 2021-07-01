@@ -1,22 +1,14 @@
 package com.example.ordinaryscoreapp.Course;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
@@ -34,6 +26,7 @@ public class CourseOverview extends AppCompatActivity {
     private ListView courseList;
     private CourseListViewAdapter adapter;
     private CourseDAL courseDAL;
+    private SearchView searchView;
     ActionBar bar;
 
     @Override
@@ -41,6 +34,24 @@ public class CourseOverview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_overview);
         courseList = this.findViewById(R.id.courseList);
+        searchView = this.findViewById(R.id.courseOverviewSearchBar);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                dbSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.equals("")){
+                    showAllCourse();
+                    showCourseList();
+                }
+                return false;
+            }
+        });
+
         courseList.setDivider(null);
         courseDAL = new CourseDAL(this);
 
@@ -107,5 +118,32 @@ public class CourseOverview extends AppCompatActivity {
         adapter = new CourseListViewAdapter(this,courseListItems);
         courseList.setAdapter(adapter);
     }
-    
+
+    public void dbSearch(String query){
+        courseListItems.clear();
+        String where;
+        where = "course_title like '%" + query + "%'";
+        Map[] courseItems = courseDAL.dbFind(where);
+        if(courseItems.length == 0){
+            courseList.setBackground(getDrawable(R.drawable.img_courselist_emptybackground));
+            Toast.makeText(this,"没有查询到数据",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            courseList.setBackground(null);
+            for(int i=0;i<courseItems.length;i++){
+                String id = (String) courseItems[i].get("course_id");
+                String title = (String) courseItems[i].get("course_title");
+                String location = (String) courseItems[i].get("course_location");
+                String time = (String) courseItems[i].get("course_time");
+                Map item = new HashMap<String, Object>();
+                item.put("id",id);
+                item.put("title",title);
+                item.put("location",location);
+                item.put("time",time);
+                courseListItems.add(item);
+            }
+        }
+        showCourseList();
+    }
+
 }
