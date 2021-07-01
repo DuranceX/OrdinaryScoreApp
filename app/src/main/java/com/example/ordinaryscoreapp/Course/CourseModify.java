@@ -2,6 +2,7 @@ package com.example.ordinaryscoreapp.Course;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ public class CourseModify extends AppCompatActivity {
     TextView addStudentButton;
     TextView delStudentButton;
     ImageView toolbarBackground;
+    SearchView studentSearchBar;
     ListView studentListView;
     View dialogBackground;
     Button addButton;
@@ -79,6 +82,8 @@ public class CourseModify extends AppCompatActivity {
         addStudentButton = this.findViewById(R.id.courseAddStudent);
         delStudentButton = this.findViewById(R.id.courseDelStudent);
         resetButton = this.findViewById(R.id.courseResetButton);
+        studentSearchBar = this.findViewById(R.id.courseStudentSearchBar);
+        students = new ArrayList<Student>();
         studentsStringList = new ArrayList<String>();
         studentDAL = new StudentDAL(this);
         courseStudentDAL = new CourseStudentDAL(this);
@@ -110,8 +115,27 @@ public class CourseModify extends AppCompatActivity {
         delButton.setOnClickListener(listener);
         addStudentButton.setOnClickListener(listener);
         delStudentButton.setOnClickListener(listener);
+
         //填充页面数据
         setData();
+
+        studentSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                dbSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.equals("")){
+                    getStudentData(courseId.getText().toString());
+                    showStudentList();
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -150,6 +174,7 @@ public class CourseModify extends AppCompatActivity {
             }
         }
         //为空表示是添加课程信息,不做改动
+        getStudentData(courseId.getText().toString());
         showStudentList();
     }
 
@@ -161,8 +186,6 @@ public class CourseModify extends AppCompatActivity {
      */
     private void showStudentList() {
         //获取学生信息
-        studentsStringList.clear();
-        getStudentData(courseId.getText().toString().trim());
         if(studentsStringList.size() == 0)
             studentListView.setBackground(getDrawable(R.drawable.img_course_studentlist_empty));
         else
@@ -353,6 +376,7 @@ public class CourseModify extends AppCompatActivity {
                                     .setConfirmClickListener(null)
                                     .show();
                         }
+                        getStudentData(courseId.getText().toString().trim());
                         showStudentList();
                     })
                     .setCustomView(dialogBackground)
@@ -400,6 +424,7 @@ public class CourseModify extends AppCompatActivity {
                                     .setConfirmClickListener(null)
                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                         }
+                        getStudentData(courseId.getText().toString());
                         showStudentList();
                     })
                     .show();
@@ -447,8 +472,9 @@ public class CourseModify extends AppCompatActivity {
      * @param ID 课程ID
      */
     public void getStudentData(String ID){
-        students = new ArrayList<Student>();
-        String where = "course_id = '" + ID + "'";
+        studentsStringList.clear();
+        students.clear();
+        String where = "course_id = '" + ID.trim() + "'";
         Map[] studentListItems = courseStudentDAL.dbFind(where);
         for(int i=0;i<studentListItems.length;i++){
             where = "student_no='" + studentListItems[i].get("student_no") + "'";
@@ -459,5 +485,33 @@ public class CourseModify extends AppCompatActivity {
             studentsStringList.add(no + "  " + name + "  " + belongClass);
             students.add(new Student(no,name,belongClass));
         }
+    }
+
+
+    public void dbSearch(String query){
+        ArrayList<String> tempStudentStringList = new ArrayList<String>(studentsStringList);
+        ArrayList<Student> tempStudentList = new ArrayList<Student>(students);
+        studentsStringList.clear();
+        students.clear();
+        for(int i=0;i<tempStudentStringList.size();i++){
+            if(!query.equals("") && tempStudentStringList.get(i).contains(query)){
+                studentsStringList.add(tempStudentStringList.get(i));
+                students.add(tempStudentList.get(i));
+            }
+        }
+        showStudentList();
+//        where = "course_id = '" + courseId.getText().toString() + "'";
+//        studentsStringList.clear();
+//        students.clear();
+//        Map[] studentListItems = courseStudentDAL.dbFind(where);
+//        for(int i=0;i<studentListItems.length;i++){
+//            where = "student_no like '%" + query +"%' OR student_name like '%" + query + "%'";
+//            Map[] temp = studentDAL.dbFind(where);
+//            String no = (String)temp[0].get("student_no");
+//            String name = (String)temp[0].get("student_name");
+//            String belongClass = (String)temp[0].get("student_class");
+//            studentsStringList.add(no + "  " + name + "  " + belongClass);
+//            students.add(new Student(no,name,belongClass));
+//        }
     }
 }

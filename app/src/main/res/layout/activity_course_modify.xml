@@ -214,8 +214,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/shadowBackground"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="12dp"
         android:layout_toEndOf="@+id/textView"
         android:background="@drawable/icon_plus" />
@@ -237,6 +237,19 @@
         android:layout_below="@+id/textView"
         android:layout_marginTop="10dp"
         android:background="#E2E2E2" />
+
+    <SearchView
+        android:id="@+id/courseStudentSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/courseStudentList"
+        android:layout_below="@+id/shadowBackground"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/courseDelStudent"
+        android:queryHint="根据学号或姓名查询"
+        android:searchHintIcon="@drawable/icon_search_light_small"
+        android:searchIcon="@drawable/icon_search_light_small" />
 
     <ListView
         android:id="@+id/courseStudentList"
