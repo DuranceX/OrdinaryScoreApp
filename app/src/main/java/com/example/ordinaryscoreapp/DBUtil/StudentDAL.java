@@ -151,4 +151,28 @@ public class StudentDAL{
         }
         return item;
     }
+
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/1 16:36
+     * @description 返回所有的班级
+     */
+    public Map[] dbGetClasses(){
+        cursor = db.query(true,TABLE_NAME,new String[]{"student_class"},null,null,null,null,"student_class ASC",null);
+        cursor.moveToFirst();
+        Map item[] = new Map[cursor.getCount()];
+        if(cursor.getCount() == 0){
+            Log.i("DataBase","没有查询到数据");
+        }
+        for(int i=0;i<cursor.getCount();i++)
+            item[i] = new HashMap<String, Object>();
+        int i=0;
+        while(!cursor.isAfterLast()){
+            String className = cursor.getString(0);
+            item[i++].put("className",className);
+            cursor.moveToNext();
+        }
+        return item;
+    }
 }

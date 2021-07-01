@@ -10,5 +10,6 @@
     <color name="green_light">#FF80CD33</color>
     <color name="alpha">#55000000</color>
     <color name="transparent">#0000</color>
-    <color name="red">#FF2727</color>
+    <color name="red">#FFFF2727</color>
+    <color name="light_red">#FFF14949</color>
 </resources>

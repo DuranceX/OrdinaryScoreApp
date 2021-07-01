@@ -104,7 +104,6 @@ public class CourseListViewAdapter extends BaseAdapter {
             holder.courseTime.setText((CharSequence)list.get(position).get("time"));
 
             //设置点击事件
-            ViewHolder temp = holder;
             holder.item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, CourseModify.class);
                 intent.putExtra("id",(CharSequence)list.get(position).get("id"));

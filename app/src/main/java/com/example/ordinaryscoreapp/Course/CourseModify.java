@@ -1,14 +1,21 @@
 package com.example.ordinaryscoreapp.Course;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +24,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseStudentDAL;
 import com.example.ordinaryscoreapp.DBUtil.StudentDAL;
+import com.example.ordinaryscoreapp.Model.Student;
 import com.example.ordinaryscoreapp.R;
 import com.example.ordinaryscoreapp.Widget.CourseStudentListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CourseModify extends AppCompatActivity {
     EditText courseId;
@@ -31,13 +41,16 @@ public class CourseModify extends AppCompatActivity {
     TextView addStudentButton;
     TextView delStudentButton;
     ImageView toolbarBackground;
-    ListView studentList;
+    ListView studentListView;
+    View dialogBackground;
     Button addButton;
     Button resetButton;
     Button delButton;
     View.OnClickListener listener;
-    ArrayAdapter courseStudentAdapter;
-    ArrayList<String> students;
+    CourseStudentListViewAdapter courseStudentAdapter;
+    ArrayList<String> studentsStringList;
+    ArrayList<Student> students;
+    ArrayList<Boolean> checked;
     CourseDAL courseDAL;
     StudentDAL studentDAL;
     CourseStudentDAL courseStudentDAL;
@@ -60,13 +73,13 @@ public class CourseModify extends AppCompatActivity {
         courseTitle = this.findViewById(R.id.courseTitleEditText);
         courseLocation = this.findViewById(R.id.courseLocationEditText);
         courseTime = this.findViewById(R.id.courseTimeEditText);
-        studentList = this.findViewById(R.id.courseStudentList);
+        studentListView = this.findViewById(R.id.courseStudentList);
         addButton = this.findViewById(R.id.courseAddButton);
         delButton = this.findViewById(R.id.courseDelButton);
         addStudentButton = this.findViewById(R.id.courseAddStudent);
         delStudentButton = this.findViewById(R.id.courseDelStudent);
         resetButton = this.findViewById(R.id.courseResetButton);
-        students = new ArrayList<String>();
+        studentsStringList = new ArrayList<String>();
         studentDAL = new StudentDAL(this);
         courseStudentDAL = new CourseStudentDAL(this);
         courseDAL = new CourseDAL(this);
@@ -97,7 +110,6 @@ public class CourseModify extends AppCompatActivity {
         delButton.setOnClickListener(listener);
         addStudentButton.setOnClickListener(listener);
         delStudentButton.setOnClickListener(listener);
-
         //填充页面数据
         setData();
     }
@@ -149,14 +161,22 @@ public class CourseModify extends AppCompatActivity {
      */
     private void showStudentList() {
         //获取学生信息
-        students.clear();
-        getStudentData(courseId.getText().toString());
-        if(students.size() == 0)
-            studentList.setBackground(getDrawable(R.drawable.img_course_studentlist_empty));
+        studentsStringList.clear();
+        getStudentData(courseId.getText().toString().trim());
+        if(studentsStringList.size() == 0)
+            studentListView.setBackground(getDrawable(R.drawable.img_course_studentlist_empty));
         else
-            studentList.setBackground(null);
-        courseStudentAdapter = new CourseStudentListViewAdapter(this,R.layout.widget_course_student_list,students);
-        studentList.setAdapter(courseStudentAdapter);
+            studentListView.setBackground(null);
+        courseStudentAdapter = new CourseStudentListViewAdapter(this,R.layout.widget_course_student_list,studentsStringList);
+        //列表项点击事件
+        studentListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                courseStudentAdapter.setClickItem(position);
+                courseStudentAdapter.notifyDataSetChanged();
+            }
+        });
+        studentListView.setAdapter(courseStudentAdapter);
     }
 
     /**
@@ -165,17 +185,29 @@ public class CourseModify extends AppCompatActivity {
      * @description 添加课程信息函数，调用courseDAl中的相关函数
      */
     public void dbAdd(){
-        String id = courseId.getText().toString();
+        String id = courseId.getText().toString().trim();
         String title = courseTitle.getText().toString();
         String location = courseLocation.getText().toString();
         String time = courseTime.getText().toString();
         long result = courseDAL.dbAdd(id,title,location,time);
         if(result == -1){
             setResult(3);
+            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("添加失败")
+                .setContentText("未能添加 " + courseId.getText().toString())
+                .setConfirmText("OK")
+                .setConfirmClickListener(null)
+                .show();
         }
-        else
+        else {
             setResult(2);
-        finish();
+            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("添加成功")
+                .setContentText("成功添加 " + courseId.getText().toString())
+                .setConfirmText("OK")
+                .setConfirmClickListener(v -> {finish();})
+                .show();
+        }
     }
 
     /**
@@ -184,13 +216,33 @@ public class CourseModify extends AppCompatActivity {
      * @description 删除课程函数，调用courseDAl中的相关函数
      */
     public void dbDel(){
-        String id = courseId.getText().toString();
-        int result = courseDAL.dbDel(id,null);
-        if(result > 0)
-            setResult(4);
-        else
-            setResult(5);
-        finish();
+        new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("你确定要删除该课程吗？")
+            .setContentText(courseTitle.getText().toString())
+            .setConfirmText("确定")
+            .setConfirmClickListener(sweetAlertDialog -> {
+                String id = courseId.getText().toString().trim();
+                int result = courseDAL.dbDel(id,null);
+                if(result > 0){
+                    setResult(4);
+                    sweetAlertDialog
+                        .setTitleText("删除成功")
+                        .setContentText("已成功删除该课程")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(v -> {finish();})
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                }
+                else{
+                    setResult(5);
+                    sweetAlertDialog
+                        .setTitleText("删除失败")
+                        .setContentText("未能成功删除该课程")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(null)
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+            })
+            .show();
     }
 
     /**
@@ -199,28 +251,148 @@ public class CourseModify extends AppCompatActivity {
      * @description 更新课程信息函数，调用courseDAl中的相关函数
      */
     public void dbUpdate(){
-        String id = courseId.getText().toString();
+        String id = courseId.getText().toString().trim();
         String title = courseTitle.getText().toString();
         String location = courseLocation.getText().toString();
         String time = courseTime.getText().toString();
         long result = courseDAL.dbUpdate(id,title,location,time);
         if(result == -1){
             setResult(7);
+            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("更新失败")
+                    .setContentText("未能更新 " + courseId.getText().toString() + "的信息")
+                    .setConfirmText("OK")
+                    .setConfirmClickListener(null)
+                    .show();
         }
-        else
+        else {
             setResult(6);
-        finish();
+            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("更新成功")
+                .setContentText("成功更新 " + courseId.getText().toString() + "的信息")
+                .setConfirmText("OK")
+                .setConfirmClickListener(v -> {finish();})
+                .show();
+        }
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/1 17:30
+     * @description 弹出对话框进行学生的添加，学生来自学生表
+     */
     public void dbAddStudent(){
-        //AddMethod
-        showStudentList();
+        //定义变量
+        Map[] classesMap;
+        String[] classes;
+        Spinner studentClass;
+        Spinner studentName;
+        ArrayAdapter<String> classAdapter;
+        dialogBackground = LayoutInflater.from(this).inflate(R.layout.widget_course_student_adddialog,null);
+        studentClass = dialogBackground.findViewById(R.id.dialogStudentClassSpinner);
+        studentName = dialogBackground.findViewById(R.id.dialogStudentNameSpinner);
+
+        //查询班级数，并绑定给studentClassSpinner
+        classesMap = studentDAL.dbGetClasses();
+        classes = new String[classesMap.length];
+        for(int i=0;i<classesMap.length;i++)
+            classes[i] = classesMap[i].get("className").toString();
+        classAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,classes);
+        classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        studentClass.setAdapter(classAdapter);
+
+        //Spinner二级联动
+        studentClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            Map[] nameMap;
+            String[] names;
+            ArrayAdapter<String> nameAdapter;
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String where = "student_class='" + studentClass.getSelectedItem().toString() + "'";
+                nameMap = studentDAL.dbFind(where);
+                names = new String[nameMap.length];
+                for (int i = 0; i < nameMap.length; i++)
+                    names[i] = nameMap[i].get("student_name").toString();
+                nameAdapter = new ArrayAdapter<String>(CourseModify.this, android.R.layout.simple_spinner_item,names);
+                nameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                studentName.setAdapter(nameAdapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //跳出对话框进行操作
+        new SweetAlertDialog(this,SweetAlertDialog.NORMAL_TYPE)
+                .setConfirmText("确定添加")
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    String no;
+                    String where = "student_name='" + studentName.getSelectedItem().toString() +
+                            "' and student_class='" + studentClass.getSelectedItem().toString() + "'";
+                    Map[] temp = studentDAL.dbFind(where);
+                    no = temp[0].get("student_no").toString();
+                    long result = courseStudentDAL.dbAdd(courseId.getText().toString().trim(),no,null);
+
+                    sweetAlertDialog.dismiss();
+                    if(result == -1){
+                        new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("添加失败")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(null)
+                                .show();
+                    }
+                    else {
+                        new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("添加成功")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(null)
+                                .show();
+                    }
+                    showStudentList();
+                })
+                .setCustomView(dialogBackground)
+                .show();
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/1 17:35
+     * @description 删除选中的学生信息
+     */
     public void dbDelStudent(){
-
+        new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("你确定要删除选中的学生吗？")
+            .setConfirmText("确定")
+            .setConfirmClickListener(sweetAlertDialog -> {
+                String id = courseId.getText().toString().trim();
+                int result=0;
+                checked = courseStudentAdapter.getChecked();
+                for(int i=0;i<checked.size();i++){
+                    if(checked.get(i)){
+                        result = courseStudentDAL.dbDel(courseId.getText().toString(),students.get(i).getNo());
+                    }
+                }
+                if(result > 0){
+                    sweetAlertDialog
+                        .setTitleText("删除成功")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(null)
+                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                }
+                else{
+                    sweetAlertDialog
+                        .setTitleText("删除失败")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(null)
+                        .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                }
+                showStudentList();
+            })
+            .show();
     }
 
     /**
@@ -258,14 +430,17 @@ public class CourseModify extends AppCompatActivity {
      * @param ID 课程ID
      */
     public void getStudentData(String ID){
+        students = new ArrayList<Student>();
         String where = "course_id = '" + ID + "'";
         Map[] studentListItems = courseStudentDAL.dbFind(where);
         for(int i=0;i<studentListItems.length;i++){
             where = "student_no='" + studentListItems[i].get("student_no") + "'";
             Map[] temp = studentDAL.dbFind(where);
-            students.add(temp[0].get("student_no") + "  " +
-                    temp[0].get("student_name") + "  " +
-                    temp[0].get("student_class"));
+            String no = (String)temp[0].get("student_no");
+            String name = (String)temp[0].get("student_name");
+            String belongClass = (String)temp[0].get("student_class");
+            studentsStringList.add(no + "  " + name + "  " + belongClass);
+            students.add(new Student(no,name,belongClass));
         }
     }
 }

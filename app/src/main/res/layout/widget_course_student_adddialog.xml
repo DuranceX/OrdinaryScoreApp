@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        app:srcCompat="@drawable/img_course_student_add" />
+
+    <Spinner
+        android:id="@+id/dialogStudentClassSpinner"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageView2"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/dialogStudentClassLabel" />
+
+    <Spinner
+        android:id="@+id/dialogStudentNameSpinner"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/dialogStudentClassSpinner"
+        android:layout_alignParentEnd="false"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/dialogStudentClassLabel" />
+
+    <TextView
+        android:id="@+id/dialogStudentClassLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="10dp"
+        android:text="学生班级："
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_title_fontSize" />
+
+    <TextView
+        android:id="@+id/dialogStudentNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogStudentClassLabel"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:text="学生姓名："
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_title_fontSize" />
+
+</RelativeLayout>
