@@ -86,7 +86,7 @@ public class CourseListViewAdapter extends BaseAdapter {
                 Button button = (Button) convertView.findViewById(R.id.button);
                 button.setOnClickListener(v -> {
                     Intent intent = new Intent(context, CourseModify.class);
-                    ((Activity) context).startActivityForResult(intent,0);
+                    context.startActivity(intent);
                 });
             }
         }
@@ -108,7 +108,7 @@ public class CourseListViewAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, CourseModify.class);
                 intent.putExtra("id",(CharSequence)list.get(position).get("id"));
                 intent.putExtra("background",imgName);
-                ((Activity) context).startActivityForResult(intent,1);
+                context.startActivity(intent);
             });
         }
         return convertView;

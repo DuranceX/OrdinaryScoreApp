@@ -107,37 +107,5 @@ public class CourseOverview extends AppCompatActivity {
         adapter = new CourseListViewAdapter(this,courseListItems);
         courseList.setAdapter(adapter);
     }
-
-
-    /**
-     * @author Xie Jiadi
-     * @time 2021/6/30 10:02
-     * @description 得到CourseModify传递的数据后执行的操作
-     * @param requestCode 0：添加课程事件  1：修改课程信息事件
-     * @param resultCode 2：添加事件成功 3：添加事件失败 4：删除事件成功 5：删除事件失败 6：更新事件成功 7：更新事件失败
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
-            case 2:
-                Toast.makeText(this,"添加成功",Toast.LENGTH_SHORT).show();
-                break;
-            case 3:
-                Toast.makeText(this,"添加失败",Toast.LENGTH_SHORT).show();
-                break;
-            case 4:
-                Toast.makeText(this,"删除成功",Toast.LENGTH_SHORT).show();
-                break;
-            case 5:
-                Toast.makeText(this,"删除失败",Toast.LENGTH_SHORT).show();
-                break;
-            case 6:
-                Toast.makeText(this,"更新成功",Toast.LENGTH_SHORT).show();
-                break;
-            case 7:
-                Toast.makeText(this,"更新失败",Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
+    
 }
