@@ -63,7 +63,7 @@ public class CourseScoreListViewAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if(convertView == null){
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.course_list_item, null);
+            convertView = inflater.inflate(R.layout.widget_course_list_item, null);
             holder.background = (ImageView) convertView.findViewById(R.id.Course_item_background);
             holder.courseTitle = (TextView) convertView.findViewById(R.id.course_title);
             holder.courseLocation = (TextView) convertView.findViewById(R.id.course_location);

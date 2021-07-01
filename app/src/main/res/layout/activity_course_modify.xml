@@ -210,7 +210,7 @@
         android:textColor="@color/green_dark" />
 
     <TextView
-        android:id="@+id/addStudent"
+        android:id="@+id/courseAddStudent"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/shadowBackground"
@@ -221,14 +221,14 @@
         android:background="@drawable/icon_plus" />
 
     <TextView
-        android:id="@+id/delStudent"
+        android:id="@+id/courseDelStudent"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/shadowBackground"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="12dp"
-        android:layout_toEndOf="@+id/addStudent"
+        android:layout_toEndOf="@+id/courseAddStudent"
         android:background="@drawable/icon_minus" />
 
     <TextView
@@ -243,7 +243,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/textView"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="5dp" />
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

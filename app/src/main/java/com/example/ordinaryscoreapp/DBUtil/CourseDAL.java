@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.ordinaryscoreapp.Model.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class CourseDAL {
     private SQLiteDatabase db;
 
     public CourseDAL(Context context){
-        dbOpenHelper = new DBOpenHelper(context,TABLE_NAME,null,1);
+        dbOpenHelper = new DBOpenHelper(context,Constants.DatabaseName,null, Constants.DatabaseVersion);
         db = dbOpenHelper.getWritableDatabase();
     }
 

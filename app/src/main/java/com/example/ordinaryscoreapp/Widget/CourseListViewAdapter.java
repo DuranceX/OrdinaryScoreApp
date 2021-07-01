@@ -73,7 +73,7 @@ public class CourseListViewAdapter extends BaseAdapter {
         if(convertView == null){
             if(type == CardType) {
                 holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.course_list_item, null);
+                convertView = inflater.inflate(R.layout.widget_course_list_item, null);
                 holder.background = (ImageView) convertView.findViewById(R.id.Course_item_background);
                 holder.courseTitle = (TextView) convertView.findViewById(R.id.course_title);
                 holder.courseLocation = (TextView) convertView.findViewById(R.id.course_location);
@@ -82,7 +82,7 @@ public class CourseListViewAdapter extends BaseAdapter {
                 convertView.setTag(holder);
             }
             else{
-                convertView = inflater.inflate(R.layout.course_list_item_button,null);
+                convertView = inflater.inflate(R.layout.widget_course_list_item_button,null);
                 Button button = (Button) convertView.findViewById(R.id.button);
                 button.setOnClickListener(v -> {
                     Intent intent = new Intent(context, CourseModify.class);

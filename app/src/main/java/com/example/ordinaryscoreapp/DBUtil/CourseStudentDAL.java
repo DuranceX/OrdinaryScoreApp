@@ -16,15 +16,15 @@ import java.util.Map;
 /**
  * @author Xie Jiadi
  * @time 2021/7/1 8:25
- * @description 学生表数据操作类
+ * @description 课程学生表数据操作类
  */
-public class StudentDAL{
-    private String TABLE_NAME = "student";
+public class CourseStudentDAL{
+    private String TABLE_NAME = "course_student";
     private Cursor cursor;
     private DBOpenHelper dbOpenHelper;
     private SQLiteDatabase db;
 
-    public StudentDAL(Context context){
+    public CourseStudentDAL(Context context){
         dbOpenHelper = new DBOpenHelper(context,Constants.DatabaseName,null, Constants.DatabaseVersion);
         db = dbOpenHelper.getWritableDatabase();
     }
@@ -32,16 +32,16 @@ public class StudentDAL{
     /**
      * @author Xie Jiadi
      * @time 2021/7/1 9:02
-     * @description 学生数据添加方法
-     * @param no 学号
-     * @param name 学生姓名
-     * @param belongClass 学生班级
+     * @description 课程学生数据添加方法
+     * @param id 课程编号
+     * @param no 学生学号
+     * @param score 课程成绩
      */
-    public long dbAdd(String no,String name,String belongClass){
+    public long dbAdd(String id,String no,@Nullable Float score){
         ContentValues values = new ContentValues();
+        values.put("course_id",id);
         values.put("student_no",no);
-        values.put("student_name",name);
-        values.put("student_class",belongClass);
+        values.put("score",score);
         long result = db.insert(TABLE_NAME,null,values);
         if(result == -1){
             Log.i("Database","addFailed");
@@ -54,16 +54,16 @@ public class StudentDAL{
     /**
      * @author Xie Jiadi
      * @time 2021/7/1 9:05
-     * @description 学生数据删除方法
+     * @description 课程学生数据删除方法
      * @param no 学生学号
-     * @param name 学生姓名
+     * @param id 课程编号
      */
-    public int dbDel(@Nullable String no,@Nullable String name){
+    public int dbDel(@Nullable String id,@Nullable String no){
         String where;
         if(!no.equals(""))
             where = "student_no='" + no + "'";
         else
-            where = "student_name='" + name + "'";
+            where = "course_id='" + id + "'";
 
         int result = db.delete(TABLE_NAME,where,null);
         if(result > 0){
@@ -78,16 +78,15 @@ public class StudentDAL{
     /**
      * @author Xie Jiadi
      * @time 2021/7/1 9:06
-     * @description 学生数据更新方法
+     * @description 课程学生数据更新方法
      * @param no 学生学号
-     * @param name 学生姓名
-     * @param belongClass 学生所属班级
+     * @param id 课程编号
+     * @param score 学生成绩
      */
-    public long dbUpdate(String no,String name,String belongClass){
+    public long dbUpdate(String id,String no,Float score){
         ContentValues values = new ContentValues();
-        values.put("student_name",name);
-        values.put("student_class",belongClass);
-        String where = "student_no='" + no + "'";
+        values.put("score",score);
+        String where = "student_no='" + no + "' and course_id='" + id + "'";
         long result = db.update(TABLE_NAME,values,where,null);
         if(result > 0){
             Log.i("DataBase","updateSucceed");
@@ -101,22 +100,22 @@ public class StudentDAL{
     /**
      * @author Xie Jiadi
      * @time 2021/7/1 9:08
-     * @description 查询所有学生数据
+     * @description 查询所有课程学生数据
      */
     public Map[] dbFindAll(){
-        cursor = db.query(TABLE_NAME, null, null, null, null, null, "student_no ASC");
+        cursor = db.query(TABLE_NAME, null, null, null, null, null, "course_id ASC");
         cursor.moveToFirst();
         Map item[] = new Map[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++)
             item[i] = new HashMap<String, Object>();
         int i=0;
         while(!cursor.isAfterLast()){
-            String no = cursor.getString(0);
-            String name = cursor.getString(1);
-            String belongClass = cursor.getString(2);
+            String id = cursor.getString(0);
+            String no = cursor.getString(1);
+            String score = cursor.getString(2);
+            item[i].put("course_id",id);
             item[i].put("student_no",no);
-            item[i].put("student_name",name);
-            item[i++].put("student_class",belongClass);
+            item[i++].put("score",score);
             cursor.moveToNext();
         }
         return item;
@@ -127,11 +126,11 @@ public class StudentDAL{
     /**
      * @author Xie Jiadi
      * @time 2021/7/1 9:09
-     * @description 查询满足条件的学生数据
+     * @description 查询满足条件的课程学生数据
      * @param where 查询条件语句
      */
     public Map[] dbFind(String where){
-        cursor = db.query(TABLE_NAME, null, where, null, null, null, "student_no ASC");
+        cursor = db.query(TABLE_NAME, null, where, null, null, null, "course_id ASC");
         cursor.moveToFirst();
         Map item[] = new Map[cursor.getCount()];
         if(cursor.getCount() == 0){
@@ -141,12 +140,12 @@ public class StudentDAL{
             item[i] = new HashMap<String, Object>();
         int i=0;
         while(!cursor.isAfterLast()){
-            String no = cursor.getString(0);
-            String name = cursor.getString(1);
-            String belongClass = cursor.getString(2);
+            String id = cursor.getString(1);
+            String no = cursor.getString(2);
+            String score = cursor.getString(3);
+            item[i].put("course_id",id);
             item[i].put("student_no",no);
-            item[i].put("student_name",name);
-            item[i++].put("student_class",belongClass);
+            item[i++].put("score",score);
             cursor.moveToNext();
         }
         return item;

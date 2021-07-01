@@ -8,15 +8,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
+import com.example.ordinaryscoreapp.DBUtil.CourseStudentDAL;
+import com.example.ordinaryscoreapp.DBUtil.StudentDAL;
 import com.example.ordinaryscoreapp.R;
+import com.example.ordinaryscoreapp.Widget.CourseStudentListViewAdapter;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class CourseModify extends AppCompatActivity {
@@ -24,14 +28,19 @@ public class CourseModify extends AppCompatActivity {
     EditText courseTitle;
     EditText courseLocation;
     EditText courseTime;
+    TextView addStudentButton;
+    TextView delStudentButton;
     ImageView toolbarBackground;
     ListView studentList;
-    Spinner[] timePicker;
     Button addButton;
     Button resetButton;
     Button delButton;
     View.OnClickListener listener;
+    ArrayAdapter courseStudentAdapter;
+    ArrayList<String> students;
     CourseDAL courseDAL;
+    StudentDAL studentDAL;
+    CourseStudentDAL courseStudentDAL;
 
     Toolbar bar;
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,12 @@ public class CourseModify extends AppCompatActivity {
         studentList = this.findViewById(R.id.courseStudentList);
         addButton = this.findViewById(R.id.courseAddButton);
         delButton = this.findViewById(R.id.courseDelButton);
+        addStudentButton = this.findViewById(R.id.courseAddStudent);
+        delStudentButton = this.findViewById(R.id.courseDelStudent);
         resetButton = this.findViewById(R.id.courseResetButton);
+        students = new ArrayList<String>();
+        studentDAL = new StudentDAL(this);
+        courseStudentDAL = new CourseStudentDAL(this);
         courseDAL = new CourseDAL(this);
         listener = v -> {
             switch (v.getId()){
@@ -70,11 +84,19 @@ public class CourseModify extends AppCompatActivity {
                 case R.id.courseDelButton:
                     dbDel();
                     break;
+                case R.id.courseAddStudent:
+                    dbAddStudent();
+                    break;
+                case R.id.courseDelStudent:
+                    dbDelStudent();
+                    break;
             }
         };
         addButton.setOnClickListener(listener);
         resetButton.setOnClickListener(listener);
         delButton.setOnClickListener(listener);
+        addStudentButton.setOnClickListener(listener);
+        delStudentButton.setOnClickListener(listener);
 
         //填充页面数据
         setData();
@@ -113,15 +135,28 @@ public class CourseModify extends AppCompatActivity {
                 int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
                 toolbarBackground.setImageResource(imageID);
                 bar.setSubtitle(courseTitle.getText().toString());
-                String[] strs = new String[]{
-                        "TestData","TestData2","TestData3",
-                        "3180608067  软件1802  谢嘉迪"
-                };
-                ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,strs);
-                studentList.setAdapter(adapter);
+                showStudentList();
             }
         }
         //为空表示是添加课程信息,不做改动
+    }
+
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/1 10:25
+     * @description 显示学生列表
+     */
+    private void showStudentList() {
+        //获取学生信息
+        students.clear();
+        getStudentData(courseId.getText().toString());
+        if(students.size() == 0)
+            studentList.setBackground(getDrawable(R.drawable.img_course_studentlist_empty));
+        else
+            studentList.setBackground(null);
+        courseStudentAdapter = new CourseStudentListViewAdapter(this,R.layout.widget_course_student_list,students);
+        studentList.setAdapter(courseStudentAdapter);
     }
 
     /**
@@ -177,6 +212,17 @@ public class CourseModify extends AppCompatActivity {
         finish();
     }
 
+
+    public void dbAddStudent(){
+        //AddMethod
+        showStudentList();
+    }
+
+
+    public void dbDelStudent(){
+
+    }
+
     /**
      * @author Xie Jiadi
      * @time 2021/6/30 11:11
@@ -201,6 +247,25 @@ public class CourseModify extends AppCompatActivity {
             courseTitle.setText("");
             courseLocation.setText("");
             courseTime.setText("");
+        }
+    }
+
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/1 10:15
+     * @description 通过课程ID来查询多个表，得到选了该课的所有学生的信息
+     * @param ID 课程ID
+     */
+    public void getStudentData(String ID){
+        String where = "course_id = '" + ID + "'";
+        Map[] studentListItems = courseStudentDAL.dbFind(where);
+        for(int i=0;i<studentListItems.length;i++){
+            where = "student_no='" + studentListItems[i].get("student_no") + "'";
+            Map[] temp = studentDAL.dbFind(where);
+            students.add(temp[0].get("student_no") + "  " +
+                    temp[0].get("student_name") + "  " +
+                    temp[0].get("student_class"));
         }
     }
 }
