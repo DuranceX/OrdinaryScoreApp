@@ -31,21 +31,47 @@ public class CheckInScoreDAL {
 
 
     public void dbInitial(){
-//        for(int i = 0; i< course_ids.length;i++){
-//            ContentValues values = new ContentValues();
-//            values.put("course_id",course_ids[i]);
-//            for(int j=0;j<student_nos.length;j++){
-//                values.put("student_no",student_nos[j]);
-//                db.insert(TABLE_NAME,null,values);
-//            }
-//        }
-//        ContentValues values = new ContentValues();
-//        for(int i=1;i<=5;i++){
-//            values.put("checkin_no_" + i,0);
-//            values.put("homework_no_"+i,0);
-//            values.put("program_no_"+i,0);
-//        }
-//        db.update(TABLE_NAME,values,null,null);
+        String sql = "drop table " + Constants.DatabaseName + ".course_score";
+        db.execSQL(sql);
+        sql = "create table course_score(_id integer primary key autoincrement," +
+                "course_id varchar," +
+                "student_no varchar," +
+                "checkin_no_1 varchar," +
+                "checkin_no_2 varchar," +
+                "checkin_no_3 varchar," +
+                "checkin_no_4 varchar," +
+                "checkin_no_5 varchar," +
+                "homework_no_1 varchar," +
+                "homework_no_2 varchar," +
+                "homework_no_3 varchar," +
+                "homework_no_4 varchar," +
+                "homework_no_5 varchar," +
+                "program_no_1 varchar," +
+                "program_no_2 varchar," +
+                "program_no_3 varchar," +
+                "program_no_4 varchar," +
+                "program_no_5 varchar," +
+                "totalScore varchar," +
+                "foreign key(course_id) references course(course_id)," +
+                "foreign key(student_no) references student(student_no))";
+        db.execSQL(sql);
+        String[] course_ids = {"CS1001","CS1002"};
+        String[] student_nos = {"3180608016","31880608031","3180608045","3180608096"};
+        for(int i = 0; i< course_ids.length;i++){
+            ContentValues values = new ContentValues();
+            values.put("course_id",course_ids[i]);
+            for(int j=0;j<student_nos.length;j++){
+                values.put("student_no",student_nos[j]);
+                db.insert(TABLE_NAME,null,values);
+            }
+        }
+        ContentValues values = new ContentValues();
+        for(int i=1;i<=5;i++){
+            values.put("checkin_no_" + i,0);
+            values.put("homework_no_"+i,0);
+            values.put("program_no_"+i,0);
+        }
+        db.update(TABLE_NAME,values,null,null);
     }
 
     public long dbUpdate(List<Map<String, Object>> scores){

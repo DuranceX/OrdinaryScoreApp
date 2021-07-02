@@ -66,58 +66,9 @@ public class CourseCheckInScore extends AppCompatActivity {
         bar.setSubtitle(title);
 
         //初始化表格数据
-        initTableData(id);
-        showTableData();
-        for(int i=2;i<=tableDataList.size();i++){
-//            String columnName = "checkin_no_" + (i-1);
-//            Column column = tableData.getColumnByFieldName(columnName);
-//            int index = i;
-//            column.setOnColumnItemClickListener(new OnColumnItemClickListener() {
-//                @Override
-//                public void onClick(Column column, String value, Object o, int position) {
-//                    List tempColumns = tableData.getColumns();
-//                    List tempData = column.getDatas();
-//                    if(concreteTableDataList.get(position).get(columnName).toString().equals("√")){
-//                        tempData.set(position,"");
-//                        column.setDatas(tempData);
-//                        concreteTableDataList.get(position).remove(columnName);
-//                        concreteTableDataList.get(position).put(columnName,"0");
-//                    }
-//                    else {
-//                        tempData.set(position,"√");
-//                        column.setDatas(tempData);
-//                        concreteTableDataList.get(position).remove(columnName);
-//                        concreteTableDataList.get(position).put(columnName,"1");
-//                    }
-//                    tempColumns.set(index,tempData);
-//                    tableData.setColumns(tempColumns);
-//                    table.setTableData(tableData);
-//                }
-//            });
-            tableData.setOnItemClickListener(new TableData.OnItemClickListener() {
-                @Override
-                public void onClick(Column column, String value, Object o, int col, int row) {
-                    if(value.equals("√")){
-                        data[row][col] = "0";
-                    }
-                    else
-                        data[row][col] = "√";
-                    concreteTableDataList.clear();
-                    for(int i=0;i<data.length;i++){
-                        Map<String,Object> temp = new LinkedHashMap<>();
-                        temp.put("course_id",data[i][0]);
-                        temp.put("student_no",data[i][1]);
-                        temp.put("student_name",data[i][2]);
-                        for(int j=3;j<data[0].length;j++){
-                            temp.put("checkin_no_" + (j-2),data[i][j].equals("√")?"1":"0");
-                        }
-                        concreteTableDataList.add(temp);
-                    }
-                    tableDataList=concreteTableDataList;
-                    showTableData();
-                }
-            });
-        }
+//        initTableData(id);
+//        showTableData();
+        checkInScoreDAL.dbInitial();
     }
 
 
@@ -149,10 +100,26 @@ public class CourseCheckInScore extends AppCompatActivity {
 
     public void showTableData(){
         tableData = MapTableData.create(title + "考勤分表",tableDataList);
+        tableData.setOnItemClickListener((column, value, o, col, row) -> {
+            if(value.equals("1")){
+                data[row][col] = "0";
+            }
+            else
+                data[row][col] = "1";
+            concreteTableDataList.clear();
+            for(int i = 0; i <data.length; i++){
+                Map<String,Object> temp = new LinkedHashMap<>();
+                temp.put("course_id",data[i][0]);
+                temp.put("student_no",data[i][1]);
+                temp.put("student_name",data[i][2]);
+                for(int j=3;j<data[0].length;j++){
+                    temp.put("checkin_no_" + (j-2),data[i][j]);
+                }
+                concreteTableDataList.add(temp);
+            }
+            tableDataList=concreteTableDataList;
+            showTableData();
+        });
         table.setTableData(tableData);
-//        Column studentNoColumn = tableData.getColumnByID(1);
-//        Column studentNameColumn = tableData.getColumnByID(2);
-//        studentNoColumn.setFixed(true);
-//        studentNameColumn.setFixed(true);
     }
 }
