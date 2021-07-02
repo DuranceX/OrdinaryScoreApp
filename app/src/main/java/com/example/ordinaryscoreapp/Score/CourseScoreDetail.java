@@ -1,7 +1,9 @@
 package com.example.ordinaryscoreapp.Score;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,27 +19,74 @@ public class CourseScoreDetail extends AppCompatActivity {
     ImageView toolbarBackground;
     TextView toolbarCourseTitle;
     Toolbar bar;
+    View.OnClickListener listener;
+    View checkInButton;
+    View homeworkButton;
+    View programButton;
+
+    String id;
+    String imageName;
+    String title;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_score_detail);
-
+        //绑定组件
+        checkInButton = this.findViewById(R.id.checkInButton);
+        homeworkButton = this.findViewById(R.id.homeworkButton);
+        programButton = this.findViewById(R.id.programButton);
         bar = this.findViewById(R.id.ScoreDetailToolbar);
         toolbarBackground = this.findViewById(R.id.ScoreDetailToolbarBackgroundImgView);
         toolbarCourseTitle = this.findViewById(R.id.CourseScoreToolbarCourseTitle);
+
+        //初始化变量
+        id = (String) getIntent().getSerializableExtra("id");
+        imageName = (String)getIntent().getSerializableExtra("background");
+        title = (String)getIntent().getSerializableExtra("title");
+
+        //定义listener
+        listener = new View.OnClickListener() {
+            Intent intent;
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.checkInButton:
+                        intent = new Intent(CourseScoreDetail.this,CourseCheckInScore.class);
+                        break;
+                    case R.id.homeworkButton:
+                        intent = new Intent(CourseScoreDetail.this,CourseHomeworkScore.class);
+                        break;
+                    case R.id.programButton:
+                        intent = new Intent(CourseScoreDetail.this,CourseProgramScore.class);
+                        break;
+                }
+                intent.putExtra("course_id",id);
+                intent.putExtra("course_title",title);
+                intent.putExtra("background",imageName);
+                startActivity(intent);
+            }
+        };
+
+        //添加点击事件监听器
+        checkInButton.setOnClickListener(listener);
+        homeworkButton.setOnClickListener(listener);
+        programButton.setOnClickListener(listener);
+
+        //设置标题样式
         setSupportActionBar(bar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bar.setTitle("当前课程");
 
+        //初始化界面
         initial();
     }
 
     public void initial(){
-        String imageName = (String)getIntent().getSerializableExtra("background");
         int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
         toolbarBackground.setImageResource(imageID);
-        toolbarCourseTitle.setText((String)getIntent().getSerializableExtra("title"));
+        toolbarCourseTitle.setText(title);
+
     }
 
     @Override

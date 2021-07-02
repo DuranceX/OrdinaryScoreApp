@@ -1,4 +1,104 @@
 package com.example.ordinaryscoreapp.DBUtil;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.example.ordinaryscoreapp.Model.Constants;
+import com.example.ordinaryscoreapp.Model.Student;
+
+import java.io.ObjectStreamException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 public class CheckInScoreDAL {
+    private String TABLE_NAME = "course_score";
+    private Cursor cursor;
+    private DBOpenHelper dbOpenHelper;
+    private SQLiteDatabase db;
+    private StudentDAL studentDAL;
+
+    public CheckInScoreDAL(Context context){
+        studentDAL = new StudentDAL(context);
+        dbOpenHelper = new DBOpenHelper(context, Constants.DatabaseName,null, Constants.DatabaseVersion);
+        db = dbOpenHelper.getWritableDatabase();
+    }
+
+
+    public void dbInitial(){
+//        for(int i = 0; i< course_ids.length;i++){
+//            ContentValues values = new ContentValues();
+//            values.put("course_id",course_ids[i]);
+//            for(int j=0;j<student_nos.length;j++){
+//                values.put("student_no",student_nos[j]);
+//                db.insert(TABLE_NAME,null,values);
+//            }
+//        }
+//        ContentValues values = new ContentValues();
+//        for(int i=1;i<=5;i++){
+//            values.put("checkin_no_" + i,0);
+//            values.put("homework_no_"+i,0);
+//            values.put("program_no_"+i,0);
+//        }
+//        db.update(TABLE_NAME,values,null,null);
+    }
+
+    public long dbUpdate(List<Map<String, Object>> scores){
+        long result=-1;
+        for(int i=0;i<scores.size();i++){
+            ContentValues values = new ContentValues();
+            String course_id = scores.get(i).get("course_id").toString();
+            String student_no = scores.get(i).get("student_no").toString();
+            for(int j=2;j<scores.get(i).size();j++){
+                String column_name = "checkin_no_" + (j-1) + "";
+                String score = scores.get(i).get(column_name).toString();
+                values.put(column_name,score);
+            }
+            String where = "student_no='" + student_no + "' and course_id='" + course_id + "'";
+            result = db.update(TABLE_NAME,values,where,null);
+            if(result > 0){
+                Log.i("DataBase","updateSucceed");
+            }
+            else
+                Log.i("DataBase","updateFailed");
+        }
+        return result;
+    }
+
+
+    public ArrayList<Map<String,Object>> dbFind(String where){
+        cursor = db.query(TABLE_NAME, null, where, null, null, null, "student_no ASC");
+        cursor.moveToFirst();
+        ArrayList<Map<String,Object>> items  = new ArrayList<>();
+        if(cursor.getCount() == 0){
+            Log.i("DataBase","没有查询到数据");
+        }
+        int i=0;
+        while(!cursor.isAfterLast()){
+            Map<String,Object> item = new LinkedHashMap<>();
+            String course_id = cursor.getString(1);
+            String student_no = cursor.getString(2);
+            String studentWhere = "student_no='" + student_no + "'";
+            String student_name = studentDAL.dbFind(studentWhere)[0].get("student_name").toString();
+            item.put("course_id",course_id);
+            item.put("student_no",student_no);
+            item.put("student_name",student_name);
+            for(int j=3;j<cursor.getColumnCount();j++){
+               if(cursor.getColumnName(j).contains("checkin"))
+                   if(cursor.getString(j)!=null && cursor.getString(j).equals("1"))
+                       item.put("checkin_no_" + (j-2),"√");
+                   else
+                       item.put("checkin_no_" + (j-2),"");
+            }
+            items.add(item);
+            cursor.moveToNext();
+        }
+        return items;
+    }
+
 }

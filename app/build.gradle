@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.github.lihangleo2:ShadowLayout:3.2.0'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     compile 'com.github.arimorty:floatingsearchview:2.1.1'
+    compile 'com.github.huangyanbin:SmartTable:2.2.0'
 }
