@@ -400,7 +400,7 @@ public class CourseModify extends AppCompatActivity {
         String isExisted = "course_id='" + courseId.getText().toString().trim() + "'";
         if(courseDAL.dbFind(isExisted).length !=0) {
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("你确定要删除选中的学生吗？")
+                    .setTitleText("确定要删除选中的学生吗？")
                     .setConfirmText("确定")
                     .setConfirmClickListener(sweetAlertDialog -> {
                         String id = courseId.getText().toString().trim();
@@ -408,7 +408,7 @@ public class CourseModify extends AppCompatActivity {
                         checked = courseStudentAdapter.getChecked();
                         for (int i = 0; i < checked.size(); i++) {
                             if (checked.get(i)) {
-                                result = courseStudentDAL.dbDel(courseId.getText().toString(), students.get(i).getNo());
+                                result = courseStudentDAL.dbDel(id, students.get(i).getNo());
                             }
                         }
                         if (result > 0) {

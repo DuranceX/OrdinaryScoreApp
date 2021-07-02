@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ScoreDetailToolbarBackgroundImgView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@color/green_deep" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ScoreDetailToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:collapseIcon="@drawable/abc_vector_test"
+        app:navigationIcon="@drawable/abc_vector_test"
+        app:subtitleTextColor="#DDDDDD"
+        app:title="当前课程"
+        app:titleTextColor="@color/white">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/CourseScoreToolbarCourseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ScoreDetailToolbar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:text="移动应用开发"
+        android:textColor="@color/white"
+        android:textSize="15pt" />
+
+    <com.lihang.ShadowLayout
+        android:id="@+id/checkInButtonShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ScoreDetailToolbarBackgroundImgView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_layoutBackground="#fff"
+        app:hl_layoutBackground_true="#32CF35"
+        app:hl_shadowColor="@color/green_shadow"
+        app:hl_shadowLimit="50dp"
+        app:hl_shadowOffsetY="6dp"
+        app:hl_shapeMode="ripple">
+
+        <LinearLayout
+            android:id="@+id/checkInButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/checkInIcon"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                app:srcCompat="@drawable/icon_checkin" />
+
+            <TextView
+                android:id="@+id/checkInText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="录入考勤分"
+                android:textSize="15pt" />
+        </LinearLayout>
+
+    </com.lihang.ShadowLayout>
+
+    <com.lihang.ShadowLayout
+        android:id="@+id/homeworkButtonShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkInButtonShadow"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-30dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_layoutBackground="#fff"
+        app:hl_layoutBackground_true="#32CF35"
+        app:hl_shadowColor="@color/green_shadow"
+        app:hl_shadowLimit="50dp"
+        app:hl_shadowOffsetY="6dp"
+        app:hl_shapeMode="ripple">
+
+        <LinearLayout
+            android:id="@+id/homeworkButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/homeworkIcon"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                app:srcCompat="@drawable/icon_homework" />
+
+            <TextView
+                android:id="@+id/homeworkText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="录入作业分"
+                android:textSize="15pt" />
+
+        </LinearLayout>
+
+    </com.lihang.ShadowLayout>
+
+    <com.lihang.ShadowLayout
+        android:id="@+id/programButtonShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/homeworkButtonShadow"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-30dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_layoutBackground="#fff"
+        app:hl_layoutBackground_true="#32CF35"
+        app:hl_shadowColor="@color/green_shadow"
+        app:hl_shadowLimit="50dp"
+        app:hl_shadowOffsetY="6dp"
+        app:hl_shapeMode="ripple">
+
+        <LinearLayout
+            android:id="@+id/programButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/programIcon"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                app:srcCompat="@drawable/icon_program" />
+
+            <TextView
+                android:id="@+id/programText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="录入上机分"
+                android:textSize="15pt" />
+
+        </LinearLayout>
+
+    </com.lihang.ShadowLayout>
+</RelativeLayout>

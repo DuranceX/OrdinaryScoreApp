@@ -88,10 +88,11 @@ public class CourseScoreListViewAdapter extends BaseAdapter {
         ViewHolder temp = holder;
         holder.item.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseScoreDetail.class);
-            intent.putExtra("title",temp.courseTitle.getText());
+            intent.putExtra("id",(CharSequence)list.get(position).get("id"));
+            intent.putExtra("title",(CharSequence)list.get(position).get("title"));
+            intent.putExtra("background",imgName);
             context.startActivity(intent);
         });
-
         return convertView;
     }
 
