@@ -1,6 +1,5 @@
 package com.example.ordinaryscoreapp.Score;
 
-import android.graphics.fonts.FontStyle;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.bin.david.form.core.SmartTable;
 import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.column.ColumnInfo;
+import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
 import com.bin.david.form.data.table.TableData;
 import com.bin.david.form.listener.OnColumnClickListener;
@@ -66,9 +66,9 @@ public class CourseCheckInScore extends AppCompatActivity {
         bar.setSubtitle(title);
 
         //初始化表格数据
-//        initTableData(id);
-//        showTableData();
-        checkInScoreDAL.dbInitial();
+        initTableData(id);
+        showTableData();
+        //checkInScoreDAL.dbInitial();
     }
 
 
@@ -96,16 +96,24 @@ public class CourseCheckInScore extends AppCompatActivity {
                 data[i][j] = concreteTableDataList.get(i).get("checkin_no_"+(j-2)).toString();
             }
         }
+        FontStyle fontStyle = new FontStyle();
+        fontStyle.setTextSize(50);
+        table.getConfig().setContentStyle(fontStyle);
+        table.setZoom(true,Float.parseFloat("2.5"),Float.parseFloat("0.5"));
+        table.getConfig().setFixedTitle(true);
+        table.getConfig().setColumnTitleStyle(fontStyle);
+        table.getConfig().setTableTitleStyle(fontStyle);
+        table.getConfig().setShowXSequence(false);
     }
 
     public void showTableData(){
         tableData = MapTableData.create(title + "考勤分表",tableDataList);
         tableData.setOnItemClickListener((column, value, o, col, row) -> {
-            if(value.equals("1")){
-                data[row][col] = "0";
+            if(value.equals("√")){
+                data[row][col] = " ";
             }
             else
-                data[row][col] = "1";
+                data[row][col] = "√";
             concreteTableDataList.clear();
             for(int i = 0; i <data.length; i++){
                 Map<String,Object> temp = new LinkedHashMap<>();
@@ -121,5 +129,11 @@ public class CourseCheckInScore extends AppCompatActivity {
             showTableData();
         });
         table.setTableData(tableData);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        checkInScoreDAL.dbUpdate(concreteTableDataList);
     }
 }
