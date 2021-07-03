@@ -1,23 +1,16 @@
 package com.example.ordinaryscoreapp.Score;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bin.david.form.core.SmartTable;
-import com.bin.david.form.data.column.Column;
-import com.bin.david.form.data.column.ColumnInfo;
 import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
-import com.bin.david.form.data.table.TableData;
-import com.bin.david.form.listener.OnColumnClickListener;
-import com.bin.david.form.listener.OnColumnItemClickListener;
 import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
 import com.example.ordinaryscoreapp.R;
 
@@ -44,7 +37,7 @@ public class CourseCheckInScore extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_checkin_score);
+        setContentView(R.layout.activity_course_score);
 
         //绑定组件
         bar = this.findViewById(R.id.CheckInScoreToolbar);
@@ -63,11 +56,12 @@ public class CourseCheckInScore extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
         toolbarBackground.setImageResource(imageID);
+        bar.setTitle("录入考勤分");
         bar.setSubtitle(title);
 
         //初始化表格数据
         initTableData(id);
-        showTableData();
+        //showTableData();
         //checkInScoreDAL.dbInitial();
     }
 
@@ -104,10 +98,17 @@ public class CourseCheckInScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+        tableData = MapTableData.create(title+"考勤分表",tableDataList);
+        addListener();
+        table.setTableData(tableData);
     }
 
     public void showTableData(){
         tableData = MapTableData.create(title + "考勤分表",tableDataList);
+        table.setTableData(tableData);
+    }
+
+    public void addListener(){
         tableData.setOnItemClickListener((column, value, o, col, row) -> {
             if(value.equals("√")){
                 data[row][col] = "";
@@ -126,9 +127,9 @@ public class CourseCheckInScore extends AppCompatActivity {
                 concreteTableDataList.add(temp);
             }
             tableDataList=concreteTableDataList;
-            showTableData();
+            tableData = MapTableData.create(title + "考勤分表",tableDataList);
+            table.notifyDataChanged();
         });
-        table.setTableData(tableData);
     }
 
     @Override

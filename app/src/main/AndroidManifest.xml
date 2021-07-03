@@ -27,6 +27,10 @@
             android:theme="@style/Theme.NoActionBar"/>
         <activity android:name=".Score.CourseCheckInScore"
             android:theme="@style/Theme.NoActionBar"/>
+        <activity android:name=".Score.CourseHomeworkScore"
+            android:theme="@style/Theme.NoActionBar"/>
+        <activity android:name=".Score.CourseProgramScore"
+            android:theme="@style/Theme.NoActionBar"/>
     </application>
 
 </manifest>

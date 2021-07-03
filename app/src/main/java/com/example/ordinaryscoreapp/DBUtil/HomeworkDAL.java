@@ -67,9 +67,10 @@ public class HomeworkDAL {
             item.put("course_id",course_id);
             item.put("student_no",student_no);
             item.put("student_name",student_name);
-            for(int j=3;j<cursor.getColumnCount();j++){
+            int p=1;
+            for(int j=1;j<cursor.getColumnCount();j++){
                 if(cursor.getColumnName(j).contains(COLUMN_NAME))
-                    item.put(COLUMN_NAME+"_no_" + (j-2),cursor.getString(j)==null?"":cursor.getString(j));
+                    item.put(COLUMN_NAME+"_no_" + p++,cursor.getString(j)==null?"":cursor.getString(j));
             }
             items.add(item);
             cursor.moveToNext();

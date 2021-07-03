@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bin.david.form.core.SmartTable;
+import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
+import com.bin.david.form.data.table.TableData;
 import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.HomeworkDAL;
 import com.example.ordinaryscoreapp.R;
@@ -30,7 +33,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CourseHomeworkScore extends AppCompatActivity {
     SmartTable table;
-    View dialogBackground;
     String COLUMN_NAME = "homework";
     String id;
     String imageName;
@@ -47,7 +49,7 @@ public class CourseHomeworkScore extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_homework_score);
+        setContentView(R.layout.activity_course_score);
 
         //绑定组件
         bar = this.findViewById(R.id.CheckInScoreToolbar);
@@ -66,11 +68,12 @@ public class CourseHomeworkScore extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
         toolbarBackground.setImageResource(imageID);
+        bar.setTitle("录入作业分");
         bar.setSubtitle(title);
 
         //初始化表格数据
         initTableData(id);
-        showTableData();
+        //showTableData();
     }
 
 
@@ -106,38 +109,43 @@ public class CourseHomeworkScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+        tableData = MapTableData.create(title + "平时作业分表",tableDataList);
+        addListener();
+        table.setTableData(tableData);
     }
 
-    public void showTableData(){
-        tableData = MapTableData.create(title + "平时作业分表",tableDataList);
-        dialogBackground = LayoutInflater.from(this).inflate(R.layout.widget_course_score_inputdialog,null);
-        TextView nameLabel = dialogBackground.findViewById(R.id.dialogStudentClassSpinner);
-        EditText nameEditText = dialogBackground.findViewById(R.id.dialogStudentNameSpinner);
-        tableData.setOnItemClickListener((column, value, o, col, row) -> {
-            nameLabel.setText(data[row][2]);
-            nameEditText.setText(data[row][col]);
-            new SweetAlertDialog(this,SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                    .setConfirmText("ok")
-                    .setConfirmClickListener(v -> {
-                        data[row][col] = nameEditText.getText().toString();
-                        v.dismiss();
-                    })
-                    .show();
-            concreteTableDataList.clear();
-            for(int i = 0; i <data.length; i++){
-                Map<String,Object> temp = new LinkedHashMap<>();
-                temp.put("course_id",data[i][0]);
-                temp.put("student_no",data[i][1]);
-                temp.put("student_name",data[i][2]);
-                for(int j=3;j<data[0].length;j++){
-                    temp.put(COLUMN_NAME+"_no_" + (j-2),data[i][j]);
-                }
-                concreteTableDataList.add(temp);
+    public void addListener(){
+        tableData.setOnItemClickListener(new TableData.OnItemClickListener() {
+            @Override
+            public void onClick(Column column, String value, Object o, int col, int row) {
+                View dialogBackground = LayoutInflater.from(CourseHomeworkScore.this).inflate(R.layout.widget_course_score_inputdialog, null);
+                TextView nameLabel = dialogBackground.findViewById(R.id.CourseScoreStudentNameLabel);
+                EditText nameEditText = dialogBackground.findViewById(R.id.CourseScoreStudentScoreEditText);
+                nameLabel.setText(data[row][2]);
+                nameEditText.setText(data[row][col]);
+                new SweetAlertDialog(CourseHomeworkScore.this,SweetAlertDialog.NORMAL_TYPE)
+                        .setCustomView(dialogBackground)
+                        .setConfirmText("ok")
+                        .setConfirmClickListener(v -> {
+                            data[row][col] = nameEditText.getText().toString();
+                            concreteTableDataList.clear();
+                            for(int i = 0; i <data.length; i++){
+                                Map<String,Object> temp = new LinkedHashMap<>();
+                                temp.put("course_id",data[i][0]);
+                                temp.put("student_no",data[i][1]);
+                                temp.put("student_name",data[i][2]);
+                                for(int j=3;j<data[0].length;j++){
+                                    temp.put(COLUMN_NAME+"_no_" + (j-2),data[i][j]);
+                                }
+                                concreteTableDataList.add(temp);
+                            }
+                            tableDataList=concreteTableDataList;
+                            table.notifyDataChanged();
+                            v.dismiss();
+                        })
+                        .show();
             }
-            tableDataList=concreteTableDataList;
-            showTableData();
         });
-        table.setTableData(tableData);
     }
 
     @Override
