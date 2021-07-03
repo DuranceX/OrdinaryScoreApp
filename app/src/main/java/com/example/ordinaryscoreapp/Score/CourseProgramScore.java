@@ -27,6 +27,12 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+
+/**
+ * @author Xie Jiadi
+ * @time 2021/7/3 11:32
+ * @description 上机分数页面，详细注释见CourseCheckInScore
+ */
 public class CourseProgramScore extends AppCompatActivity {
     SmartTable table;
     String COLUMN_NAME = "program";
@@ -84,6 +90,12 @@ public class CourseProgramScore extends AppCompatActivity {
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:32
+     * @description 根据课程编号查询课程成绩表，初始化考勤分数列表
+     * @param id 课程编号
+     */
     public void initTableData(String id){
         String where = "course_id='" + id + "'";
         concreteTableDataList = programDAL.dbFind(where);
@@ -97,6 +109,8 @@ public class CourseProgramScore extends AppCompatActivity {
                 data[i][j] = concreteTableDataList.get(i).get(COLUMN_NAME+"_no_"+(j-2)).toString();
             }
         }
+
+        //设置表格样式
         FontStyle fontStyle = new FontStyle();
         fontStyle.setTextSize(50);
         table.getConfig().setContentStyle(fontStyle);
@@ -105,15 +119,25 @@ public class CourseProgramScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+
+        //绑定数据
         tableData = MapTableData.create(title + "上机分表",tableDataList);
         addListener();
         table.setTableData(tableData);
     }
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:32
+     * @description 为表格添加点击事件
+     */
     public void addListener(){
         tableData.setOnItemClickListener(new TableData.OnItemClickListener() {
             @Override
             public void onClick(Column column, String value, Object o, int col, int row) {
+                //dialogBackground的设置必须放在onClick方法内部，因为对话框中有setView的方法，所有如果放在外面，会出现”
+                //The specified child already has a parent. You must call removeView()"报错
+                //需要重新生成子视图，不然通过setCustomView方法，一个子视图将被指定多个父视图
                 View dialogBackground = LayoutInflater.from(CourseProgramScore.this).inflate(R.layout.widget_course_score_inputdialog, null);
                 TextView nameLabel = dialogBackground.findViewById(R.id.CourseScoreStudentNameLabel);
                 EditText nameEditText = dialogBackground.findViewById(R.id.CourseScoreStudentScoreEditText);
@@ -144,6 +168,13 @@ public class CourseProgramScore extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:33
+     * @description 退出页面时保存数据到数据库
+     * @param
+     */
     @Override
     protected void onStop() {
         super.onStop();

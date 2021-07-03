@@ -13,8 +13,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.ordinaryscoreapp.R;
 
+/**
+ * @author Xie Jiadi
+ * @time 2021/7/3 11:37
+ * @description 课程的详细操作界面
+ */
 public class CourseScoreDetail extends AppCompatActivity {
-
 
     ImageView toolbarBackground;
     TextView toolbarCourseTitle;
@@ -82,11 +86,16 @@ public class CourseScoreDetail extends AppCompatActivity {
         initial();
     }
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:38
+     * @description 初始化界面，主要是设置Toolbar的样式
+     * @param
+     */
     public void initial(){
         int imageID = getResources().getIdentifier(imageName,"drawable",getPackageName());
         toolbarBackground.setImageResource(imageID);
         toolbarCourseTitle.setText(title);
-
     }
 
     @Override

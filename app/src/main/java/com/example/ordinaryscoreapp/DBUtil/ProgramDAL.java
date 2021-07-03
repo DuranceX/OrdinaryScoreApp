@@ -13,6 +13,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Xie Jiadi
+ * @time 2021/7/3 11:25
+ * @description 上机分数数据表操作类
+ */
 public class ProgramDAL{
     private String TABLE_NAME = "course_score";
     private String COLUMN_NAME = "program";
@@ -27,6 +33,12 @@ public class ProgramDAL{
         db = dbOpenHelper.getWritableDatabase();
     }
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:25
+     * @description 更新课程成绩信息
+     * @param scores 一个Map对象的List，List的大小即总记录数，每个Map存放一条记录的信息
+     */
     public long dbUpdate(List<Map<String, Object>> scores){
         long result=-1;
         for(int i=0;i<scores.size();i++){
@@ -49,6 +61,14 @@ public class ProgramDAL{
         return result;
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:25
+     * @description 查询数据表并返回信息
+     * @param where 查询语句
+     * @return items 一个Map对象的List，List的大小即总记录数，每个Map存放一条记录的信息
+     */
     public ArrayList<Map<String,Object>> dbFind(String where){
         cursor = db.query(TABLE_NAME, null, where, null, null, null, "student_no ASC");
         cursor.moveToFirst();

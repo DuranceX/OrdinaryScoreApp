@@ -19,6 +19,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Xie Jiadi
+ * @time 2021/7/3 11:29
+ * @description 考勤分数页面
+ */
 public class CourseCheckInScore extends AppCompatActivity {
 
     SmartTable table;
@@ -29,6 +35,7 @@ public class CourseCheckInScore extends AppCompatActivity {
     List tableDataList;
     ArrayList<Map<String,Object>> concreteTableDataList;
     MapTableData tableData;
+    //用二维数组记录UI表中的值，便于操作
     String[][] data;
 
     ImageView toolbarBackground;
@@ -61,7 +68,6 @@ public class CourseCheckInScore extends AppCompatActivity {
 
         //初始化表格数据
         initTableData(id);
-        //showTableData();
         //checkInScoreDAL.dbInitial();
     }
 
@@ -77,10 +83,18 @@ public class CourseCheckInScore extends AppCompatActivity {
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:26
+     * @description 根据课程编号查询课程成绩表，初始化考勤分数列表
+     * @param id 课程编号
+     */
     public void initTableData(String id){
         String where = "course_id='" + id + "'";
         concreteTableDataList = checkInScoreDAL.dbFind(where);
         tableDataList = concreteTableDataList;
+
+        //将查询结果写入data数组中
         data = new String[tableDataList.size()][concreteTableDataList.get(0).size()];
         for(int i =0;i<data.length;i++){
             data[i][0] = concreteTableDataList.get(i).get("course_id").toString();
@@ -90,6 +104,8 @@ public class CourseCheckInScore extends AppCompatActivity {
                 data[i][j] = concreteTableDataList.get(i).get("checkin_no_"+(j-2)).toString();
             }
         }
+
+        //设置表格样式
         FontStyle fontStyle = new FontStyle();
         fontStyle.setTextSize(50);
         table.getConfig().setContentStyle(fontStyle);
@@ -98,16 +114,25 @@ public class CourseCheckInScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+
+        //绑定数据
         tableData = MapTableData.create(title+"考勤分表",tableDataList);
         addListener();
         table.setTableData(tableData);
     }
 
+    //弃用
     public void showTableData(){
         tableData = MapTableData.create(title + "考勤分表",tableDataList);
         table.setTableData(tableData);
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:28
+     * @description 为表格添加点击事件
+     */
     public void addListener(){
         tableData.setOnItemClickListener((column, value, o, col, row) -> {
             if(value.equals("√")){
@@ -132,6 +157,12 @@ public class CourseCheckInScore extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:28
+     * @description 退出页面时保存数据到数据库
+     */
     @Override
     protected void onStop() {
         super.onStop();

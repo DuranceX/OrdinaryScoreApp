@@ -18,6 +18,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Xie Jiadi
+ * @time 2021/7/3 11:19
+ * @description 考勤分数数据操作类
+ */
 public class CheckInScoreDAL {
     private final String TABLE_NAME = "course_score";
     private final String COLUMN_NAME = "checkin";
@@ -77,6 +82,13 @@ public class CheckInScoreDAL {
         db.update(TABLE_NAME,values,null,null);
     }
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:19
+     * @description 添加数据，当添加课程中的选课信息时，同步添加课程成绩表
+     * @param id 课程编号
+     * @param no 学生学号
+     */
     public long dbAdd(String id,String no){
         ContentValues values = new ContentValues();
         values.put("course_id",id);
@@ -90,6 +102,14 @@ public class CheckInScoreDAL {
         return result;
     }
 
+
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:20
+     * @description 删除课程成绩表的记录，当学号学号为空时，表示删除的是这个课程，即删除所有的该课程的课程成绩记录
+     * @param id 课程编号
+     * @param no 学生学号
+     */
     public int dbDel(@Nullable String id, @Nullable String no){
         String where="course_id='" + id + "'";;
         if(!no.equals(""))
@@ -105,6 +125,12 @@ public class CheckInScoreDAL {
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:21
+     * @description 更新课程成绩信息
+     * @param scores 一个Map对象的List，List的大小即总记录数，每个Map存放一条记录的信息
+     */
     public long dbUpdate(List<Map<String, Object>> scores){
         long result=-1;
         for(int i=0;i<scores.size();i++){
@@ -128,6 +154,13 @@ public class CheckInScoreDAL {
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:22
+     * @description 查询数据表并返回信息
+     * @param where 查询语句
+     * @return items 一个Map对象的List，List的大小即总记录数，每个Map存放一条记录的信息
+     */
     public ArrayList<Map<String,Object>> dbFind(String where){
         cursor = db.query(TABLE_NAME, null, where, null, null, null, "student_no ASC");
         cursor.moveToFirst();

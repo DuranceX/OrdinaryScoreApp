@@ -503,6 +503,12 @@ public class CourseModify extends AppCompatActivity {
     }
 
 
+    /**
+     * @author Xie Jiadi
+     * @time 2021/7/3 11:18
+     * @description 搜索选课学生列表
+     * @param query 搜索用的sql语句
+     */
     public void dbSearch(String query){
         ArrayList<String> tempStudentStringList = new ArrayList<String>(studentsStringList);
         ArrayList<Student> tempStudentList = new ArrayList<Student>(students);
@@ -515,18 +521,5 @@ public class CourseModify extends AppCompatActivity {
             }
         }
         showStudentList();
-//        where = "course_id = '" + courseId.getText().toString() + "'";
-//        studentsStringList.clear();
-//        students.clear();
-//        Map[] studentListItems = courseStudentDAL.dbFind(where);
-//        for(int i=0;i<studentListItems.length;i++){
-//            where = "student_no like '%" + query +"%' OR student_name like '%" + query + "%'";
-//            Map[] temp = studentDAL.dbFind(where);
-//            String no = (String)temp[0].get("student_no");
-//            String name = (String)temp[0].get("student_name");
-//            String belongClass = (String)temp[0].get("student_class");
-//            studentsStringList.add(no + "  " + name + "  " + belongClass);
-//            students.add(new Student(no,name,belongClass));
-//        }
     }
 }
