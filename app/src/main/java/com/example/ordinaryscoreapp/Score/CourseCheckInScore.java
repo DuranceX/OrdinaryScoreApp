@@ -110,9 +110,9 @@ public class CourseCheckInScore extends AppCompatActivity {
         tableData = MapTableData.create(title + "考勤分表",tableDataList);
         tableData.setOnItemClickListener((column, value, o, col, row) -> {
             if(value.equals("√")){
-                data[row][col] = " ";
+                data[row][col] = "";
             }
-            else
+            else if(value.equals(""))
                 data[row][col] = "√";
             concreteTableDataList.clear();
             for(int i = 0; i <data.length; i++){

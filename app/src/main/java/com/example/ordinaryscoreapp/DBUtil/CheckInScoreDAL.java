@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.ordinaryscoreapp.Model.Constants;
 import com.example.ordinaryscoreapp.Model.Student;
 
@@ -74,6 +76,34 @@ public class CheckInScoreDAL {
         db.update(TABLE_NAME,values,null,null);
     }
 
+    public long dbAdd(String id,String no){
+        ContentValues values = new ContentValues();
+        values.put("course_id",id);
+        values.put("student_no",no);
+        long result = db.insert(TABLE_NAME,null,values);
+        if(result == -1){
+            Log.i("Database","addFailed");
+        }
+        else
+            Log.i("Database","addSucceed");
+        return result;
+    }
+
+    public int dbDel(@Nullable String id, @Nullable String no){
+        String where="course_id='" + id + "'";;
+        if(!no.equals(""))
+            where = where + " and student_no='" + no + "'";
+
+        int result = db.delete(TABLE_NAME,where,null);
+        if(result > 0){
+            Log.i("DataBase","delSucceed");
+        }
+        else
+            Log.i("DataBase","delFailed");
+        return result;
+    }
+
+
     public long dbUpdate(List<Map<String, Object>> scores){
         long result=-1;
         for(int i=0;i<scores.size();i++){
@@ -116,7 +146,7 @@ public class CheckInScoreDAL {
             item.put("student_name",student_name);
             for(int j=3;j<cursor.getColumnCount();j++){
                if(cursor.getColumnName(j).contains("checkin"))
-                       item.put("checkin_no_" + (j-2),cursor.getString(j));
+                   item.put("checkin_no_" + (j-2),cursor.getString(j)==null?"":cursor.getString(j));
             }
             items.add(item);
             cursor.moveToNext();

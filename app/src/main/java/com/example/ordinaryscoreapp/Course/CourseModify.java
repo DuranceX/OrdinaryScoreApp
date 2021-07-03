@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseStudentDAL;
 import com.example.ordinaryscoreapp.DBUtil.StudentDAL;
@@ -56,6 +57,7 @@ public class CourseModify extends AppCompatActivity {
     ArrayList<Boolean> checked;
     CourseDAL courseDAL;
     StudentDAL studentDAL;
+    CheckInScoreDAL checkInScoreDAL;
     CourseStudentDAL courseStudentDAL;
 
     Toolbar bar;
@@ -85,6 +87,7 @@ public class CourseModify extends AppCompatActivity {
         studentSearchBar = this.findViewById(R.id.courseStudentSearchBar);
         students = new ArrayList<Student>();
         studentsStringList = new ArrayList<String>();
+        checkInScoreDAL = new CheckInScoreDAL(this);
         studentDAL = new StudentDAL(this);
         courseStudentDAL = new CourseStudentDAL(this);
         courseDAL = new CourseDAL(this);
@@ -215,7 +218,7 @@ public class CourseModify extends AppCompatActivity {
         long result = courseDAL.dbAdd(id,title,location,time);
         if(result == -1){
             setResult(3);
-            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+            new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("添加失败")
                 .setContentText("未能添加 " + courseId.getText().toString())
                 .setConfirmText("OK")
@@ -281,7 +284,7 @@ public class CourseModify extends AppCompatActivity {
         long result = courseDAL.dbUpdate(id,title,location,time);
         if(result == -1){
             setResult(7);
-            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+            new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("更新失败")
                     .setContentText("未能更新 " + courseId.getText().toString() + "的信息")
                     .setConfirmText("OK")
@@ -336,9 +339,10 @@ public class CourseModify extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String where = "student_class='" + studentClass.getSelectedItem().toString() + "'";
                     nameMap = studentDAL.dbFind(where);
-                    names = new String[nameMap.length];
-                    for (int i = 0; i < nameMap.length; i++)
-                        names[i] = nameMap[i].get("student_name").toString();
+                    names = new String[nameMap.length+1];
+                    names[0] = "全部";
+                    for (int i = 1; i < nameMap.length+1; i++)
+                        names[i] = nameMap[i-1].get("student_name").toString();
                     nameAdapter = new ArrayAdapter<String>(CourseModify.this, android.R.layout.simple_spinner_item,names);
                     nameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                     studentName.setAdapter(nameAdapter);
@@ -355,21 +359,31 @@ public class CourseModify extends AppCompatActivity {
                     .setConfirmText("确定添加")
                     .setConfirmClickListener(sweetAlertDialog -> {
                         String no;
-                        String where = "student_name='" + studentName.getSelectedItem().toString() +
-                                "' and student_class='" + studentClass.getSelectedItem().toString() + "'";
+                        String where;
+                        long result=-1;
+                        if(studentName.getSelectedItem().toString().equals("全部"))
+                            where = "student_class='" + studentClass.getSelectedItem().toString() + "'";
+                        else
+                            where = "student_name='" + studentName.getSelectedItem().toString() +
+                                    "' and student_class='" + studentClass.getSelectedItem().toString() + "'";
                         Map[] temp = studentDAL.dbFind(where);
-                        no = temp[0].get("student_no").toString();
-                        long result = courseStudentDAL.dbAdd(courseId.getText().toString().trim(),no,null);
-
+                        for(int i=0;i<temp.length;i++){
+                            no = temp[i].get("student_no").toString();
+                            result = courseStudentDAL.dbAdd(courseId.getText().toString().trim(),no,null);
+                        }
                         sweetAlertDialog.dismiss();
                         if(result == -1){
-                            new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+                            new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("添加失败")
                                     .setConfirmText("OK")
                                     .setConfirmClickListener(null)
                                     .show();
                         }
                         else {
+                            for(int i=0;i<temp.length;i++){
+                                no = temp[i].get("student_no").toString();
+                                checkInScoreDAL.dbAdd(courseId.getText().toString().trim(),no);
+                            }
                             new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("添加成功")
                                     .setConfirmText("OK")
@@ -408,6 +422,7 @@ public class CourseModify extends AppCompatActivity {
                         checked = courseStudentAdapter.getChecked();
                         for (int i = 0; i < checked.size(); i++) {
                             if (checked.get(i)) {
+                                checkInScoreDAL.dbDel(id,students.get(i).getNo());
                                 result = courseStudentDAL.dbDel(id, students.get(i).getNo());
                             }
                         }

@@ -59,11 +59,9 @@ public class CourseStudentDAL{
      * @param id 课程编号
      */
     public int dbDel(@Nullable String id,@Nullable String no){
-        String where;
+        String where="course_id='" + id + "'";;
         if(!no.equals(""))
-            where = "student_no='" + no + "'";
-        else
-            where = "course_id='" + id + "'";
+            where = where + " and student_no='" + no + "'";
 
         int result = db.delete(TABLE_NAME,where,null);
         if(result > 0){
