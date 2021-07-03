@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CheckInScoreDAL {
-    private String TABLE_NAME = "course_score";
+    private final String TABLE_NAME = "course_score";
+    private final String COLUMN_NAME = "checkin";
     private Cursor cursor;
     private DBOpenHelper dbOpenHelper;
     private SQLiteDatabase db;
@@ -111,7 +112,7 @@ public class CheckInScoreDAL {
             String course_id = scores.get(i).get("course_id").toString();
             String student_no = scores.get(i).get("student_no").toString();
             for(int j=3;j<scores.get(i).size();j++){
-                String column_name = "checkin_no_" + (j-2) + "";
+                String column_name = COLUMN_NAME+"_no_" + (j-2) + "";
                 String score = scores.get(i).get(column_name).toString();
                 values.put(column_name,score);
             }
@@ -145,8 +146,8 @@ public class CheckInScoreDAL {
             item.put("student_no",student_no);
             item.put("student_name",student_name);
             for(int j=3;j<cursor.getColumnCount();j++){
-               if(cursor.getColumnName(j).contains("checkin"))
-                   item.put("checkin_no_" + (j-2),cursor.getString(j)==null?"":cursor.getString(j));
+               if(cursor.getColumnName(j).contains(COLUMN_NAME))
+                   item.put(COLUMN_NAME+"_no_" + (j-2),cursor.getString(j)==null?"":cursor.getString(j));
             }
             items.add(item);
             cursor.moveToNext();
