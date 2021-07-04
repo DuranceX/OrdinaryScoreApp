@@ -26,10 +26,20 @@
         <activity android:name=".Score.CourseScoreDetail"
             android:theme="@style/Theme.NoActionBar"/>
         <activity android:name=".Score.CourseCheckInScore"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.NoActionBar"/>
         <activity android:name=".Score.CourseHomeworkScore"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.NoActionBar"/>
         <activity android:name=".Score.CourseProgramScore"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.NoActionBar"/>
+        <activity android:name=".Score.CourseTotalScore"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.NoActionBar"/>
     </application>
 

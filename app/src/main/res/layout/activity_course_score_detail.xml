@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ScoreDetailToolbarBackgroundImgView"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="0dp"
         app:hl_cornerRadius="8dp"
         app:hl_layoutBackground="#fff"
         app:hl_layoutBackground_true="#32CF35"
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/checkInButtonShadow"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-50dp"
         app:hl_cornerRadius="8dp"
         app:hl_layoutBackground="#fff"
         app:hl_layoutBackground_true="#32CF35"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/homeworkButtonShadow"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-50dp"
         app:hl_cornerRadius="8dp"
         app:hl_layoutBackground="#fff"
         app:hl_layoutBackground_true="#32CF35"
@@ -155,7 +155,47 @@
                 android:paddingVertical="10dp"
                 android:text="录入上机分"
                 android:textSize="15pt" />
+        </LinearLayout>
 
+    </com.lihang.ShadowLayout>
+
+    <com.lihang.ShadowLayout
+        android:id="@+id/totalScoreButtonShadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/programButtonShadow"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-50dp"
+        app:hl_cornerRadius="8dp"
+        app:hl_layoutBackground="#fff"
+        app:hl_layoutBackground_true="#32CF35"
+        app:hl_shadowColor="@color/green_shadow"
+        app:hl_shadowLimit="50dp"
+        app:hl_shadowOffsetY="6dp"
+        app:hl_shapeMode="ripple">
+
+        <LinearLayout
+            android:id="@+id/totalScoreButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/totalScoreIcon"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                app:srcCompat="@drawable/icon_score_table" />
+
+            <TextView
+                android:id="@+id/totalScoreText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="查看成绩单"
+                android:textSize="15pt" />
         </LinearLayout>
 
     </com.lihang.ShadowLayout>

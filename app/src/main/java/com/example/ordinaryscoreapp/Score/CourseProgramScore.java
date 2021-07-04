@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,9 @@ import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
 import com.bin.david.form.data.table.TableData;
+import com.example.ordinaryscoreapp.DBUtil.CourseScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.ProgramDAL;
+import com.example.ordinaryscoreapp.Model.Constants;
 import com.example.ordinaryscoreapp.R;
 
 import java.util.ArrayList;
@@ -40,8 +44,13 @@ public class CourseProgramScore extends AppCompatActivity {
     String imageName;
     String title;
     ProgramDAL programDAL;
+    CourseScoreDAL courseScoreDAL;
     List tableDataList;
     ArrayList<Map<String,Object>> concreteTableDataList;
+    TextView tableTitle;
+    TextView addColumn;
+    TextView delColumn;
+    Button saveButton;
     MapTableData tableData;
     String[][] data;
 
@@ -57,12 +66,31 @@ public class CourseProgramScore extends AppCompatActivity {
         bar = this.findViewById(R.id.CheckInScoreToolbar);
         toolbarBackground = this.findViewById(R.id.CheckInScoreToolbarBackgroundImgView);
         table = (SmartTable)this.findViewById(R.id.checkInScoreTable);
+        addColumn = this.findViewById(R.id.AddColumnButton);
+        delColumn = this.findViewById(R.id.DelColumnButton);
+        tableTitle = this.findViewById(R.id.TableTitle);
+        saveButton = this.findViewById(R.id.SaveToEmailButton);
 
         //初始化变量
         id = (String) getIntent().getSerializableExtra("course_id");
         imageName = (String)getIntent().getSerializableExtra("background");
         title = (String)getIntent().getSerializableExtra("course_title");
         programDAL = new ProgramDAL(this);
+        courseScoreDAL = new CourseScoreDAL(this);
+        tableTitle.setText("上机分表");
+        saveButton.setVisibility(View.INVISIBLE);
+        addColumn.setOnClickListener(v -> {
+            Constants.ProgramColumnNumber++;
+            String columnName = "program_no_" + Constants.ProgramColumnNumber;
+            courseScoreDAL.addColumn(columnName);
+            initTableData(id);
+        });
+        delColumn.setOnClickListener(v -> {
+            String columnName = "program_no_" + Constants.ProgramColumnNumber;
+            courseScoreDAL.delColumn(columnName,this);
+            Constants.ProgramColumnNumber--;
+            initTableData(id);
+        });
 
         //初始化标题栏样式
         setSupportActionBar(bar);
@@ -97,6 +125,8 @@ public class CourseProgramScore extends AppCompatActivity {
      * @param id 课程编号
      */
     public void initTableData(String id){
+        //在删除列后是一个新的同名数据库，需要重新获取
+        programDAL = new ProgramDAL(CourseProgramScore.this);
         String where = "course_id='" + id + "'";
         concreteTableDataList = programDAL.dbFind(where);
         tableDataList = concreteTableDataList;
@@ -119,6 +149,7 @@ public class CourseProgramScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+        table.getConfig().setShowTableTitle(false);
 
         //绑定数据
         tableData = MapTableData.create(title + "上机分表",tableDataList);

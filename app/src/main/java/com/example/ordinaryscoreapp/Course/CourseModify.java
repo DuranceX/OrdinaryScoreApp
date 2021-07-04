@@ -1,8 +1,6 @@
 package com.example.ordinaryscoreapp.Course;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseDAL;
+import com.example.ordinaryscoreapp.DBUtil.CourseScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseStudentDAL;
 import com.example.ordinaryscoreapp.DBUtil.StudentDAL;
 import com.example.ordinaryscoreapp.Model.Student;
@@ -59,6 +55,7 @@ public class CourseModify extends AppCompatActivity {
     StudentDAL studentDAL;
     CheckInScoreDAL checkInScoreDAL;
     CourseStudentDAL courseStudentDAL;
+    CourseScoreDAL courseScoreDAL;
 
     Toolbar bar;
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +78,8 @@ public class CourseModify extends AppCompatActivity {
         studentListView = this.findViewById(R.id.courseStudentList);
         addButton = this.findViewById(R.id.courseAddButton);
         delButton = this.findViewById(R.id.courseDelButton);
-        addStudentButton = this.findViewById(R.id.courseAddStudent);
-        delStudentButton = this.findViewById(R.id.courseDelStudent);
+        addStudentButton = this.findViewById(R.id.AddColumnButton);
+        delStudentButton = this.findViewById(R.id.DelColumnButton);
         resetButton = this.findViewById(R.id.courseResetButton);
         studentSearchBar = this.findViewById(R.id.courseStudentSearchBar);
         students = new ArrayList<Student>();
@@ -90,6 +87,7 @@ public class CourseModify extends AppCompatActivity {
         checkInScoreDAL = new CheckInScoreDAL(this);
         studentDAL = new StudentDAL(this);
         courseStudentDAL = new CourseStudentDAL(this);
+        courseScoreDAL = new CourseScoreDAL(this);
         courseDAL = new CourseDAL(this);
         listener = v -> {
             switch (v.getId()){
@@ -105,10 +103,10 @@ public class CourseModify extends AppCompatActivity {
                 case R.id.courseDelButton:
                     dbDel();
                     break;
-                case R.id.courseAddStudent:
+                case R.id.AddColumnButton:
                     dbAddStudent();
                     break;
-                case R.id.courseDelStudent:
+                case R.id.DelColumnButton:
                     dbDelStudent();
                     break;
             }
@@ -382,7 +380,7 @@ public class CourseModify extends AppCompatActivity {
                         else {
                             for(int i=0;i<temp.length;i++){
                                 no = temp[i].get("student_no").toString();
-                                checkInScoreDAL.dbAdd(courseId.getText().toString().trim(),no);
+                                courseScoreDAL.dbAdd(courseId.getText().toString().trim(),no);
                             }
                             new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("添加成功")
@@ -422,7 +420,7 @@ public class CourseModify extends AppCompatActivity {
                         checked = courseStudentAdapter.getChecked();
                         for (int i = 0; i < checked.size(); i++) {
                             if (checked.get(i)) {
-                                checkInScoreDAL.dbDel(id,students.get(i).getNo());
+                                courseScoreDAL.dbDel(id,students.get(i).getNo());
                                 result = courseStudentDAL.dbDel(id, students.get(i).getNo());
                             }
                         }

@@ -18,9 +18,9 @@
         android:theme="?attr/actionBarTheme"
         app:collapseIcon="@drawable/abc_vector_test"
         app:navigationIcon="@drawable/abc_vector_test"
-        app:subtitle="移动应用开发"
+        app:subtitle="XX课程"
         app:subtitleTextColor="#DDDDDD"
-        app:title="录入考勤分"
+        app:title="录入XX分"
         app:titleTextColor="@color/white">
 
     </androidx.appcompat.widget.Toolbar>
@@ -29,7 +29,52 @@
         android:id="@+id/checkInScoreTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp">
+        android:layout_marginTop="120dp">
 
     </com.bin.david.form.core.SmartTable>
+
+    <TextView
+        android:id="@+id/TableTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CheckInScoreToolbarBackgroundImgView"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:maxEms="10"
+        android:singleLine="true"
+        android:text="XX表"
+        android:textSize="8pt" />
+
+    <Button
+        android:id="@+id/SaveToEmailButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CheckInScoreToolbarBackgroundImgView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/TableTitle"
+        android:text="备份到邮箱"
+        android:textSize="8pt"
+        app:icon="@drawable/icon_save_small" />
+
+    <TextView
+        android:id="@+id/AddColumnButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/CheckInScoreToolbarBackgroundImgView"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/TableTitle"
+        android:background="@drawable/icon_plus" />
+
+    <TextView
+        android:id="@+id/DelColumnButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/CheckInScoreToolbarBackgroundImgView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/AddColumnButton"
+        android:background="@drawable/icon_minus" />
 </RelativeLayout>

@@ -27,6 +27,7 @@ public class CourseScoreDetail extends AppCompatActivity {
     View checkInButton;
     View homeworkButton;
     View programButton;
+    View totalScoreButton;
 
     String id;
     String imageName;
@@ -39,6 +40,7 @@ public class CourseScoreDetail extends AppCompatActivity {
         checkInButton = this.findViewById(R.id.checkInButton);
         homeworkButton = this.findViewById(R.id.homeworkButton);
         programButton = this.findViewById(R.id.programButton);
+        totalScoreButton = this.findViewById(R.id.totalScoreButton);
         bar = this.findViewById(R.id.ScoreDetailToolbar);
         toolbarBackground = this.findViewById(R.id.ScoreDetailToolbarBackgroundImgView);
         toolbarCourseTitle = this.findViewById(R.id.CourseScoreToolbarCourseTitle);
@@ -63,6 +65,9 @@ public class CourseScoreDetail extends AppCompatActivity {
                     case R.id.programButton:
                         intent = new Intent(CourseScoreDetail.this,CourseProgramScore.class);
                         break;
+                    case R.id.totalScoreButton:
+                        intent = new Intent(CourseScoreDetail.this,CourseTotalScore.class);
+                        break;
                 }
                 intent.putExtra("course_id",id);
                 intent.putExtra("course_title",title);
@@ -75,6 +80,7 @@ public class CourseScoreDetail extends AppCompatActivity {
         checkInButton.setOnClickListener(listener);
         homeworkButton.setOnClickListener(listener);
         programButton.setOnClickListener(listener);
+        totalScoreButton.setOnClickListener(listener);
 
         //设置标题样式
         setSupportActionBar(bar);

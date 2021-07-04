@@ -1,8 +1,13 @@
 package com.example.ordinaryscoreapp.Score;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +17,8 @@ import com.bin.david.form.core.SmartTable;
 import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
 import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
+import com.example.ordinaryscoreapp.DBUtil.CourseScoreDAL;
+import com.example.ordinaryscoreapp.Model.Constants;
 import com.example.ordinaryscoreapp.R;
 
 import java.util.ArrayList;
@@ -27,13 +34,44 @@ import java.util.Map;
  */
 public class CourseCheckInScore extends AppCompatActivity {
 
+    public class myTask extends AsyncTask {
+        String columnName;
+        String id;
+
+        public myTask(String columnName,String id){
+            this.columnName = columnName;
+            this.id = id;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("dd","Pre");
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            courseScoreDAL.addColumn(columnName);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+
+        }
+    }
+
     SmartTable table;
     String id;
     String imageName;
     String title;
     CheckInScoreDAL checkInScoreDAL;
+    CourseScoreDAL courseScoreDAL;
     List tableDataList;
     ArrayList<Map<String,Object>> concreteTableDataList;
+    TextView tableTitle;
+    TextView addColumn;
+    TextView delColumn;
+    Button saveButton;
     MapTableData tableData;
     //用二维数组记录UI表中的值，便于操作
     String[][] data;
@@ -50,12 +88,31 @@ public class CourseCheckInScore extends AppCompatActivity {
         bar = this.findViewById(R.id.CheckInScoreToolbar);
         toolbarBackground = this.findViewById(R.id.CheckInScoreToolbarBackgroundImgView);
         table = (SmartTable)this.findViewById(R.id.checkInScoreTable);
+        addColumn = this.findViewById(R.id.AddColumnButton);
+        delColumn = this.findViewById(R.id.DelColumnButton);
+        tableTitle = this.findViewById(R.id.TableTitle);
+        saveButton = this.findViewById(R.id.SaveToEmailButton);
 
         //初始化变量
         id = (String) getIntent().getSerializableExtra("course_id");
         imageName = (String)getIntent().getSerializableExtra("background");
         title = (String)getIntent().getSerializableExtra("course_title");
         checkInScoreDAL = new CheckInScoreDAL(this);
+        courseScoreDAL = new CourseScoreDAL(this);
+        tableTitle.setText("考勤分表");
+        saveButton.setVisibility(View.INVISIBLE);
+        addColumn.setOnClickListener(v -> {
+            Constants.CheckInColumnNumber++;
+            String columnName = "checkin_no_" + Constants.CheckInColumnNumber;
+            courseScoreDAL.addColumn(columnName);
+            initTableData(id);
+        });
+        delColumn.setOnClickListener(v -> {
+            String columnName = "checkin_no_" + Constants.CheckInColumnNumber;
+            courseScoreDAL.delColumn(columnName,this);
+            Constants.CheckInColumnNumber--;
+            initTableData(id);
+        });
 
         //初始化标题栏样式
         setSupportActionBar(bar);
@@ -90,6 +147,8 @@ public class CourseCheckInScore extends AppCompatActivity {
      * @param id 课程编号
      */
     public void initTableData(String id){
+        //在删除列后是一个新的同名数据库，需要重新获取
+        checkInScoreDAL = new CheckInScoreDAL(CourseCheckInScore.this);
         String where = "course_id='" + id + "'";
         concreteTableDataList = checkInScoreDAL.dbFind(where);
         tableDataList = concreteTableDataList;
@@ -114,6 +173,7 @@ public class CourseCheckInScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+        table.getConfig().setShowTableTitle(false);
 
         //绑定数据
         tableData = MapTableData.create(title+"考勤分表",tableDataList);

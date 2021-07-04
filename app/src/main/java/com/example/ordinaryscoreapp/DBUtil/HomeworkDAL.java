@@ -79,7 +79,9 @@ public class HomeworkDAL {
         if(cursor.getCount() == 0){
             Log.i("DataBase","没有查询到数据");
         }
+        int columnCount=0;
         while(!cursor.isAfterLast()){
+            columnCount=0;
             Map<String,Object> item = new LinkedHashMap<>();
             String course_id = cursor.getString(1);
             String student_no = cursor.getString(2);
@@ -90,12 +92,15 @@ public class HomeworkDAL {
             item.put("student_name",student_name);
             int p=1;
             for(int j=1;j<cursor.getColumnCount();j++){
-                if(cursor.getColumnName(j).contains(COLUMN_NAME))
-                    item.put(COLUMN_NAME+"_no_" + p++,cursor.getString(j)==null?"":cursor.getString(j));
+                if(cursor.getColumnName(j).contains(COLUMN_NAME)) {
+                    item.put(COLUMN_NAME + "_no_" + p++, cursor.getString(j) == null ? "" : cursor.getString(j));
+                    columnCount++;
+                }
             }
             items.add(item);
             cursor.moveToNext();
         }
+        Constants.HomeworkColumnNumber = columnCount;
         return items;
     }
 }

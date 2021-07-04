@@ -38,93 +38,6 @@ public class CheckInScoreDAL {
     }
 
 
-    public void dbInitial(){
-//        String sql = "drop table course_score";
-//        db.execSQL(sql);
-//        sql = "create table course_score(_id integer primary key autoincrement," +
-//                "course_id varchar," +
-//                "student_no varchar," +
-//                "checkin_no_1 varchar," +
-//                "checkin_no_2 varchar," +
-//                "checkin_no_3 varchar," +
-//                "checkin_no_4 varchar," +
-//                "checkin_no_5 varchar," +
-//                "homework_no_1 varchar," +
-//                "homework_no_2 varchar," +
-//                "homework_no_3 varchar," +
-//                "homework_no_4 varchar," +
-//                "homework_no_5 varchar," +
-//                "program_no_1 varchar," +
-//                "program_no_2 varchar," +
-//                "program_no_3 varchar," +
-//                "program_no_4 varchar," +
-//                "program_no_5 varchar," +
-//                "totalScore varchar," +
-//                "foreign key(course_id) references course(course_id)," +
-//                "foreign key(student_no) references student(student_no))";
-//        db.execSQL(sql);
-//        String[] course_ids = {"CS1001","CS1002"};
-//        String[] student_nos = {"3180608016","3180608031","3180608045","3180608096"};
-//        for(int i = 0; i< course_ids.length;i++){
-//            ContentValues values = new ContentValues();
-//            values.put("course_id",course_ids[i]);
-//            for(int j=0;j<student_nos.length;j++){
-//                values.put("student_no",student_nos[j]);
-//                db.insert(TABLE_NAME,null,values);
-//            }
-//        }
-        ContentValues values = new ContentValues();
-        for(int i=1;i<=5;i++){
-            values.put("checkin_no_" + i,"");
-            values.put("homework_no_"+i,"");
-            values.put("program_no_"+i,"");
-        }
-        db.update(TABLE_NAME,values,null,null);
-    }
-
-    /**
-     * @author Xie Jiadi
-     * @time 2021/7/3 11:19
-     * @description 添加数据，当添加课程中的选课信息时，同步添加课程成绩表
-     * @param id 课程编号
-     * @param no 学生学号
-     */
-    public long dbAdd(String id,String no){
-        ContentValues values = new ContentValues();
-        values.put("course_id",id);
-        values.put("student_no",no);
-        long result = db.insert(TABLE_NAME,null,values);
-        if(result == -1){
-            Log.i("Database","addFailed");
-        }
-        else
-            Log.i("Database","addSucceed");
-        return result;
-    }
-
-
-    /**
-     * @author Xie Jiadi
-     * @time 2021/7/3 11:20
-     * @description 删除课程成绩表的记录，当学号学号为空时，表示删除的是这个课程，即删除所有的该课程的课程成绩记录
-     * @param id 课程编号
-     * @param no 学生学号
-     */
-    public int dbDel(@Nullable String id, @Nullable String no){
-        String where="course_id='" + id + "'";;
-        if(!no.equals(""))
-            where = where + " and student_no='" + no + "'";
-
-        int result = db.delete(TABLE_NAME,where,null);
-        if(result > 0){
-            Log.i("DataBase","delSucceed");
-        }
-        else
-            Log.i("DataBase","delFailed");
-        return result;
-    }
-
-
     /**
      * @author Xie Jiadi
      * @time 2021/7/3 11:21
@@ -168,8 +81,9 @@ public class CheckInScoreDAL {
         if(cursor.getCount() == 0){
             Log.i("DataBase","没有查询到数据");
         }
-        int i=0;
+        int columnCount=0;
         while(!cursor.isAfterLast()){
+            columnCount=0;
             Map<String,Object> item = new LinkedHashMap<>();
             String course_id = cursor.getString(1);
             String student_no = cursor.getString(2);
@@ -178,13 +92,17 @@ public class CheckInScoreDAL {
             item.put("course_id",course_id);
             item.put("student_no",student_no);
             item.put("student_name",student_name);
+            int p=1;
             for(int j=3;j<cursor.getColumnCount();j++){
-               if(cursor.getColumnName(j).contains(COLUMN_NAME))
-                   item.put(COLUMN_NAME+"_no_" + (j-2),cursor.getString(j)==null?"":cursor.getString(j));
+               if(cursor.getColumnName(j).contains(COLUMN_NAME)) {
+                   item.put(COLUMN_NAME + "_no_" + p++, cursor.getString(j) == null ? "" : cursor.getString(j));
+                   columnCount++;
+               }
             }
             items.add(item);
             cursor.moveToNext();
         }
+        Constants.CheckInColumnNumber = columnCount;
         return items;
     }
 

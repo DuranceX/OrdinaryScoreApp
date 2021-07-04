@@ -210,7 +210,7 @@
         android:textColor="@color/green_dark" />
 
     <TextView
-        android:id="@+id/courseAddStudent"
+        android:id="@+id/AddColumnButton"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/shadowBackground"
@@ -221,14 +221,14 @@
         android:background="@drawable/icon_plus" />
 
     <TextView
-        android:id="@+id/courseDelStudent"
+        android:id="@+id/DelColumnButton"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@+id/shadowBackground"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="12dp"
-        android:layout_toEndOf="@+id/courseAddStudent"
+        android:layout_toEndOf="@+id/AddColumnButton"
         android:background="@drawable/icon_minus" />
 
     <TextView
@@ -246,7 +246,7 @@
         android:layout_below="@+id/shadowBackground"
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/courseDelStudent"
+        android:layout_toEndOf="@+id/DelColumnButton"
         android:queryHint="根据学号或姓名查询"
         android:searchHintIcon="@drawable/icon_search_light_small"
         android:searchIcon="@drawable/icon_search_light_small" />

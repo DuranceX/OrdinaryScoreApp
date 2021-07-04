@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +20,9 @@ import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
 import com.bin.david.form.data.table.TableData;
 import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
+import com.example.ordinaryscoreapp.DBUtil.CourseScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.HomeworkDAL;
+import com.example.ordinaryscoreapp.Model.Constants;
 import com.example.ordinaryscoreapp.R;
 
 import org.w3c.dom.Text;
@@ -44,8 +47,13 @@ public class CourseHomeworkScore extends AppCompatActivity {
     String imageName;
     String title;
     HomeworkDAL homeworkDAL;
+    CourseScoreDAL courseScoreDAL;
     List tableDataList;
     ArrayList<Map<String,Object>> concreteTableDataList;
+    TextView tableTitle;
+    TextView addColumn;
+    TextView delColumn;
+    Button saveButton;
     MapTableData tableData;
     String[][] data;
 
@@ -61,12 +69,31 @@ public class CourseHomeworkScore extends AppCompatActivity {
         bar = this.findViewById(R.id.CheckInScoreToolbar);
         toolbarBackground = this.findViewById(R.id.CheckInScoreToolbarBackgroundImgView);
         table = (SmartTable)this.findViewById(R.id.checkInScoreTable);
+        addColumn = this.findViewById(R.id.AddColumnButton);
+        delColumn = this.findViewById(R.id.DelColumnButton);
+        tableTitle = this.findViewById(R.id.TableTitle);
+        saveButton = this.findViewById(R.id.SaveToEmailButton);
 
         //初始化变量
         id = (String) getIntent().getSerializableExtra("course_id");
         imageName = (String)getIntent().getSerializableExtra("background");
         title = (String)getIntent().getSerializableExtra("course_title");
         homeworkDAL = new HomeworkDAL(this);
+        courseScoreDAL = new CourseScoreDAL(this);
+        tableTitle.setText("平时作业分表");
+        saveButton.setVisibility(View.INVISIBLE);
+        addColumn.setOnClickListener(v -> {
+            Constants.HomeworkColumnNumber++;
+            String columnName = "homework_no_" + Constants.HomeworkColumnNumber;
+            courseScoreDAL.addColumn(columnName);
+            initTableData(id);
+        });
+        delColumn.setOnClickListener(v -> {
+            String columnName = "homework_no_" + Constants.HomeworkColumnNumber;
+            courseScoreDAL.delColumn(columnName,this);
+            Constants.HomeworkColumnNumber--;
+            initTableData(id);
+        });
 
         //初始化标题栏样式
         setSupportActionBar(bar);
@@ -101,6 +128,8 @@ public class CourseHomeworkScore extends AppCompatActivity {
      * @param id 课程编号
      */
     public void initTableData(String id){
+        //在删除列后是一个新的同名数据库，需要重新获取
+        homeworkDAL = new HomeworkDAL(CourseHomeworkScore.this);
         String where = "course_id='" + id + "'";
         concreteTableDataList = homeworkDAL.dbFind(where);
         tableDataList = concreteTableDataList;
@@ -123,6 +152,7 @@ public class CourseHomeworkScore extends AppCompatActivity {
         table.getConfig().setColumnTitleStyle(fontStyle);
         table.getConfig().setTableTitleStyle(fontStyle);
         table.getConfig().setShowXSequence(false);
+        table.getConfig().setShowTableTitle(false);
 
         //绑定数据
         tableData = MapTableData.create(title + "平时作业分表",tableDataList);
