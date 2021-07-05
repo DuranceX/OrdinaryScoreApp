@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ordinaryscoreapp">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         tools:replace="android:icon"
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -40,6 +44,7 @@
         <activity android:name=".Score.CourseTotalScore"
             android:screenOrientation="sensor"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
             android:theme="@style/Theme.NoActionBar"/>
     </application>
 

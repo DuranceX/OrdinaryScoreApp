@@ -54,16 +54,20 @@ public class CourseScoreDAL {
 //                "foreign key(course_id) references course(course_id)," +
 //                "foreign key(student_no) references student(student_no))";
 //        db.execSQL(sql);
-//        String[] course_ids = {"CS1001","CS1002"};
-//        String[] student_nos = {"3180608016","3180608031","3180608045","3180608096"};
-//        for(int i = 0; i< course_ids.length;i++){
-//            ContentValues values = new ContentValues();
-//            values.put("course_id",course_ids[i]);
-//            for(int j=0;j<student_nos.length;j++){
-//                values.put("student_no",student_nos[j]);
-//                db.insert(TABLE_NAME,null,values);
-//            }
-//        }
+        String[] course_ids = {"CS1001","CS1002"};
+        String[] student_nos = {"3180608016","3180608031","3180608045","3180608096"};
+        studentDAL.dbAdd("3180608016","XXX","软件1802");
+        studentDAL.dbAdd("3180608031","EEE","软件1802");
+        studentDAL.dbAdd("3180608045","SSS","软件1801");
+        studentDAL.dbAdd("3180608096","RRR","软件1803");
+        for(int i = 0; i< course_ids.length;i++){
+            ContentValues values = new ContentValues();
+            values.put("course_id",course_ids[i]);
+            for(int j=0;j<student_nos.length;j++){
+                values.put("student_no",student_nos[j]);
+                db.insert(TABLE_NAME,null,values);
+            }
+        }
         ContentValues values = new ContentValues();
         for(int i=1;i<=5;i++){
             values.put("checkin_no_" + i,"");

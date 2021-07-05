@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -171,7 +170,7 @@ public class CourseProgramScore extends AppCompatActivity {
                 //需要重新生成子视图，不然通过setCustomView方法，一个子视图将被指定多个父视图
                 View dialogBackground = LayoutInflater.from(CourseProgramScore.this).inflate(R.layout.widget_course_score_inputdialog, null);
                 TextView nameLabel = dialogBackground.findViewById(R.id.CourseScoreStudentNameLabel);
-                EditText nameEditText = dialogBackground.findViewById(R.id.CourseScoreStudentScoreEditText);
+                EditText nameEditText = dialogBackground.findViewById(R.id.EmailEditText);
                 nameLabel.setText(data[row][2]);
                 nameEditText.setText(data[row][col]);
                 new SweetAlertDialog(CourseProgramScore.this,SweetAlertDialog.NORMAL_TYPE)

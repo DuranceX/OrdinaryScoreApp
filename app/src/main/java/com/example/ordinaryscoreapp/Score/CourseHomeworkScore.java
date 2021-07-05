@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,13 +18,10 @@ import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.style.FontStyle;
 import com.bin.david.form.data.table.MapTableData;
 import com.bin.david.form.data.table.TableData;
-import com.example.ordinaryscoreapp.DBUtil.CheckInScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.CourseScoreDAL;
 import com.example.ordinaryscoreapp.DBUtil.HomeworkDAL;
 import com.example.ordinaryscoreapp.Model.Constants;
 import com.example.ordinaryscoreapp.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -175,7 +171,7 @@ public class CourseHomeworkScore extends AppCompatActivity {
                 //需要重新生成子视图，不然通过setCustomView方法，一个子视图将被指定多个父视图
                 View dialogBackground = LayoutInflater.from(CourseHomeworkScore.this).inflate(R.layout.widget_course_score_inputdialog, null);
                 TextView nameLabel = dialogBackground.findViewById(R.id.CourseScoreStudentNameLabel);
-                EditText nameEditText = dialogBackground.findViewById(R.id.CourseScoreStudentScoreEditText);
+                EditText nameEditText = dialogBackground.findViewById(R.id.EmailEditText);
                 nameLabel.setText(data[row][2]);
                 nameEditText.setText(data[row][col]);
                 new SweetAlertDialog(CourseHomeworkScore.this,SweetAlertDialog.NORMAL_TYPE)

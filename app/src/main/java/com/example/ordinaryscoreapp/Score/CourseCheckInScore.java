@@ -56,7 +56,7 @@ public class CourseCheckInScore extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Object o) {
-
+            initTableData(id);
         }
     }
 
@@ -124,8 +124,9 @@ public class CourseCheckInScore extends AppCompatActivity {
         bar.setSubtitle(title);
 
         //初始化表格数据
+        //courseScoreDAL.dbInitial();
         initTableData(id);
-        //checkInScoreDAL.dbInitial();
+
     }
 
 
