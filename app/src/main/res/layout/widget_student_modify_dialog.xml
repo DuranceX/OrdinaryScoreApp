@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        app:srcCompat="@drawable/img_course_student_add" />
+
+    <TextView
+        android:id="@+id/StudentDialogNoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView4"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="10dp"
+        android:text="学生学号："
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_title_fontSize" />
+
+    <TextView
+        android:id="@+id/StudentDialogNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StudentDialogNoLabel"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:text="学生姓名："
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_title_fontSize" />
+
+    <TextView
+        android:id="@+id/StudentDialogClassLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StudentDialogNameLabel"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:text="学生班级："
+        android:textColor="@color/black"
+        android:textSize="@dimen/course_title_fontSize" />
+
+    <EditText
+        android:id="@+id/StudentDialogNoEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/imageView4"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/StudentDialogNoLabel"
+        android:ems="10"
+        android:hint="输入学生学号"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/StudentDialogNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/StudentDialogNoEditText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/StudentDialogNoLabel"
+        android:ems="10"
+        android:hint="输入学生姓名"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/StudentDialogClassEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/StudentDialogNameEditText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/StudentDialogNoLabel"
+        android:ems="10"
+        android:hint="输入学生班级"
+        android:inputType="textPersonName" />
+
+</RelativeLayout>

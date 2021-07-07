@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="学生列表："
+        android:textSize="@dimen/course_title_fontSize"
+        android:textColor="@color/green_dark" />
+
+    <TextView
+        android:id="@+id/StudentAddButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/textView"
+        android:background="@drawable/icon_plus" />
+
+    <TextView
+        android:id="@+id/StudentDelButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/StudentAddButton"
+        android:background="@drawable/icon_minus" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp"
+        android:background="#E2E2E2" />
+
+    <SearchView
+        android:id="@+id/StudentSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/StudentList"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/StudentDelButton"
+        android:queryHint="根据学号或姓名查询"
+        android:searchHintIcon="@drawable/icon_search_light_small"
+        android:searchIcon="@drawable/icon_search_light_small" />
+
+    <ListView
+        android:id="@+id/StudentList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>

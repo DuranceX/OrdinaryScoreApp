@@ -247,6 +247,8 @@ public class CourseModify extends AppCompatActivity {
             .setConfirmClickListener(sweetAlertDialog -> {
                 String id = courseId.getText().toString().trim();
                 int result = courseDAL.dbDel(id,null);
+                courseScoreDAL.dbDel(id,null);
+                courseStudentDAL.dbDel(id,null);
                 if(result > 0){
                     setResult(4);
                     sweetAlertDialog

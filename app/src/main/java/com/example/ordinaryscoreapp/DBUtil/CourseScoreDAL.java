@@ -107,10 +107,13 @@ public class CourseScoreDAL {
      * @param no 学生学号
      */
     public int dbDel(@Nullable String id, @Nullable String no){
-        String where="course_id='" + id + "'";;
-        if(!no.equals(""))
-            where = where + " and student_no='" + no + "'";
-
+        String where;
+        if(id!=null && no!=null)
+            where="course_id='" + id + "' and student_no='" + no + "'";
+        else if(id == null)
+            where = "student_no='" + no + "'";
+        else
+            where = "course_id='" + id +"'";
         int result = db.delete(TABLE_NAME,where,null);
         if(result > 0){
             Log.i("DataBase","delSucceed");
